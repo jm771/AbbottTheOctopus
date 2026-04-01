@@ -86,6 +86,7 @@ function App() {
           const reactionData = {
             timestamp: new Date().toISOString(),
             participantUUID: data.participantUUID,
+            type: data.type,
             reactionType: data.reactionType,
             unicode: data.unicode,
             eventType: 'emoji_reaction',
@@ -104,30 +105,31 @@ function App() {
           }).catch(err => console.error('Failed to log reaction to backend:', err))
         })
 
-        // Log emoji reactions (newer API)
-        zoomSdk.onEmojiReaction((data) => {
-          console.log('😀 onEmojiReaction event - Full data:', data)
+        // // Log emoji reactions (newer API)
+        // zoomSdk.onEmojiReaction((data) => {
+        //   console.log('😀 onEmojiReaction event - Full data:', data)
 
-          const emojiData = {
-            timestamp: new Date().toISOString(),
-            participantUUID: data.participantUUID,
-            emoji: data.emoji,
-            unicode: data.unicode,
-            eventType: 'emoji_reaction_v2',
-            fullData: data
-          }
+        //   const emojiData = {
+        //     timestamp: new Date().toISOString(),
+        //     participantUUID: data.participantUUID,
+        //     type: data.type,
+        //     emoji: data.emoji,
+        //     unicode: data.unicode,
+        //     eventType: 'emoji_reaction_v2',
+        //     fullData: data
+        //   }
 
-          console.log('😀 EMOJI REACTION DETECTED:', emojiData)
+        //   console.log('😀 EMOJI REACTION DETECTED:', emojiData)
 
-          // Send to backend
-          fetch('/api/zoomapp/log-reaction', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(emojiData)
-          }).catch(err => console.error('Failed to log emoji reaction to backend:', err))
-        })
+        //   // Send to backend
+        //   fetch('/api/zoomapp/log-reaction', {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(emojiData)
+        //   }).catch(err => console.error('Failed to log emoji reaction to backend:', err))
+        // })
 
         // Log feedback reactions (yes, no, raise hand, etc.)
         zoomSdk.onFeedbackReaction((data) => {
@@ -136,6 +138,7 @@ function App() {
           const feedbackData = {
             timestamp: new Date().toISOString(),
             participantUUID: data.participantUUID,
+            type: data.type,
             feedback: data.feedback,
             eventType: 'feedback_reaction',
             fullData: data

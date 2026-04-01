@@ -295,6 +295,7 @@ module.exports = {
       const {
         timestamp,
         participantUUID,
+        type,
         reactionType,
         unicode,
         feedback,
@@ -309,6 +310,7 @@ module.exports = {
         eventType: eventType || 'reaction',
         meetingUUID: meetingUUID || req.session.meetingUUID,
         participantUUID,
+        type,
         reactionType,
         unicode,
         feedback,

@@ -24,6 +24,9 @@ services:
       - ZOOM_APP_REDIRECT_URI=${PUBLIC_URL}/api/zoomapp/auth
       - ZOOM_APP_OAUTH_STATE_SECRET=${ZOOM_APP_OAUTH_STATE_SECRET}
       - ZOOM_HOST=${ZOOM_HOST}
+      - REACTION_RECEIVER_URL=${REACTION_RECEIVER_URL}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./backend:/home/node/app
       - /home/node/app/node_modules
