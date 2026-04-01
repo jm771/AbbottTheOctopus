@@ -2,6 +2,10 @@ const { createProxyMiddleware } = require('http-proxy-middleware')
 const zoomApi = require('../../util/zoom-api')
 const zoomHelpers = require('../../util/zoom-helpers')
 const store = require('../../util/store')
+const fs = require('fs')
+const path = require('path')
+const https = require('https')
+const http = require('http')
 
 module.exports = {
   // In-client OAuth 1/2
@@ -277,6 +281,105 @@ module.exports = {
     // 4. Redirect to frontend
     console.log('4. Redirect to frontend', '\n')
     res.redirect('/api/zoomapp/proxy')
+  },
+
+  // LOG REACTION ===========================================================
+  // This route logs reactions received from the frontend
+  async logReaction(req, res, next) {
+    console.log(
+      'LOG REACTION HANDLER ===========================================================',
+      '\n'
+    )
+
+    try {
+      const {
+        timestamp,
+        participantUUID,
+        reactionType,
+        unicode,
+        feedback,
+        eventType,
+        meetingUUID,
+        userContext
+      } = req.body
+
+      // Log to console (you can replace this with file logging, database, etc.)
+      const logEntry = {
+        timestamp: timestamp || new Date().toISOString(),
+        eventType: eventType || 'reaction',
+        meetingUUID: meetingUUID || req.session.meetingUUID,
+        participantUUID,
+        reactionType,
+        unicode,
+        feedback,
+        userContext
+      }
+
+      console.log('Reaction logged:', JSON.stringify(logEntry, null, 2))
+
+      // Write to log file
+      const logDir = path.join(__dirname, '../../logs')
+      const logFile = path.join(logDir, 'reactions.log')
+
+      // Create logs directory if it doesn't exist
+      if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir, { recursive: true })
+      }
+
+      // Append to log file
+      const logLine = JSON.stringify(logEntry) + '\n'
+      fs.appendFile(logFile, logLine, (err) => {
+        if (err) {
+          console.error('Error writing to log file:', err)
+        }
+      })
+
+      // Forward to external reaction receiver service if configured
+      if (process.env.REACTION_RECEIVER_URL) {
+        const url = new URL(process.env.REACTION_RECEIVER_URL)
+        const postData = JSON.stringify(logEntry)
+
+        const options = {
+          hostname: url.hostname,
+          port: url.port || (url.protocol === 'https:' ? 443 : 80),
+          path: url.pathname,
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData)
+          }
+        }
+
+        const httpModule = url.protocol === 'https:' ? https : http
+
+        const forwardReq = httpModule.request(options, (forwardRes) => {
+          console.log(`Forwarded to receiver service. Status: ${forwardRes.statusCode}`)
+        })
+
+        forwardReq.on('error', (error) => {
+          console.error('Error forwarding to receiver service:', error.message)
+        })
+
+        forwardReq.write(postData)
+        forwardReq.end()
+      }
+
+      // TODO: Add your custom actions here
+      // Examples:
+      // - Store in database (MongoDB, PostgreSQL, etc.)
+      // - Send to analytics service (Google Analytics, Mixpanel, etc.)
+      // - Trigger webhooks or notifications
+      // - Update real-time dashboards
+
+      return res.json({
+        success: true,
+        message: 'Reaction logged successfully',
+        logEntry
+      })
+    } catch (error) {
+      console.error('Error logging reaction:', error)
+      return next(error)
+    }
   },
 
   // FRONTEND PROXY ===========================================================

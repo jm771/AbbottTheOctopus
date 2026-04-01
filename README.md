@@ -99,6 +99,9 @@ Follow these instructions for the "Development" section
     - `onMyUserContextChange`
     - `onSendAppInvitation`
     - `onShareApp`
+    - `onReaction`
+    - `onFeedbackReaction`
+    - `onEmojiReaction`
     - `openUrl`
     - `postMessage`
     - `promptAuthorize`

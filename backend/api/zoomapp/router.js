@@ -9,5 +9,6 @@ router
   .get('/home', controller.home)
   .get('/authorize', controller.inClientAuthorize)
   .post('/onauthorized', controller.inClientOnAuthorized)
+  .post('/log-reaction', controller.logReaction)
 
 module.exports = router

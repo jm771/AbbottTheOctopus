@@ -15,6 +15,7 @@ export const Authorization = (props) => {
     handleUserContextStatus,
     user,
     userContextStatus,
+    runningContext,
   } = props;
   const location = useLocation();
   const [userAuthorized, setUserAuthorized] = useState(null);
@@ -67,6 +68,9 @@ export const Authorization = (props) => {
   };
 
   useEffect(() => {
+    // Wait for SDK to be configured before adding event listeners
+    if (!runningContext) return;
+
     // this is not the best way to make sure > 1 instances are not registered
     console.log("In-Client OAuth flow: onAuthorized event listener added");
     zoomSdk.addEventListener("onAuthorized", (event) => {
@@ -100,12 +104,18 @@ export const Authorization = (props) => {
         handleError(null);
       });
     });
-  }, [handleError]);
+  }, [handleError, runningContext]);
 
   useEffect(() => {
+    // Wait for SDK to be configured before adding event listeners
+    if (!runningContext) return;
+
     zoomSdk.addEventListener("onMyUserContextChange", (event) => {
       handleUserContextStatus(event.status);
     });
+  }, [handleUserContextStatus, runningContext]);
+
+  useEffect(() => {
     async function fetchUser() {
       try {
         // An example of using the Zoom REST API via proxy
@@ -132,7 +142,7 @@ export const Authorization = (props) => {
     ) {
       setInGuestMode(true);
     }
-  }, [handleUser, handleUserContextStatus, userAuthorized, userContextStatus]);
+  }, [handleUser, userAuthorized, userContextStatus]);
 
   return (
     <>
