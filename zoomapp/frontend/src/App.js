@@ -19,7 +19,6 @@ function App() {
   const [counter, setCounter] = useState(0)
   const [preMeeting, setPreMeeting] = useState(true) // start with pre-meeting code
   const [userContextStatus, setUserContextStatus] = useState('')
-  const [rmtsMessage, setRtmsMessage] = useState('')
 
   useEffect(() => {
     async function configureSdk() {
@@ -61,10 +60,6 @@ function App() {
             'onReaction',
             'onFeedbackReaction',
             'onEmojiReaction',
-
-            // RTMS
-            // 'startRTMS',
-            // 'stopRTMS',
           ],
           version: '0.16.0',
         })
@@ -270,24 +265,6 @@ function App() {
     )
   }
 
-  const handleStartRTMS = async () => {
-    try {
-      const res = await zoomSdk.callZoomApi('startRTMS')
-      setRtmsMessage(`startRTMS success response: ${res}`)
-    } catch (error) {
-      setRtmsMessage(`startRTMS error response: ${error}`)
-    }
-  }
-
-  const handleStopRTMS = async () => {
-    try {
-      const res = await zoomSdk.callZoomApi('stopRTMS')
-      setRtmsMessage(`stopRTMS success response: ${res}`)
-    } catch (error) {
-      setRtmsMessage(`stopRTMS error response: ${error}`)
-    }
-  }
-
   return (
     <div className='App'>
       <h1>
@@ -297,9 +274,7 @@ function App() {
       <p>{`User Context Status: ${userContextStatus}`}</p>
       <p>{runningContext ? `Running Context: ${runningContext}` : 'Configuring Zoom JavaScript SDK...'}</p>
 
-      {rmtsMessage && <p className='fw-bold'>{rmtsMessage}</p>}
-
-      <ApiScrollview onStartRTMS={handleStartRTMS} onStopRTMS={handleStopRTMS} />
+      <ApiScrollview/>
       <Authorization
         handleError={setError}
         handleUserContextStatus={setUserContextStatus}

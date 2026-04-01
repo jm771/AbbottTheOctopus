@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import { apis, invokeZoomAppsSdk } from '../apis'
 import './ApiScrollview.css'
 
-function ApiScrollview({ onStartRTMS, onStopRTMS }) {
+function ApiScrollview({ }) {
   const [apiSearchText, setApiSearchText] = useState('')
 
   const searchHandler = (e) => {
@@ -24,13 +24,6 @@ function ApiScrollview({ onStartRTMS, onStopRTMS }) {
       <input placeholder='Search for an API' onChange={searchHandler} label='Search' id='api-scrollview-input' />
 
       <div className='api-buttons-list'>
-        <Button className='api-button' onClick={onStartRTMS}>
-          startRTMS
-        </Button>
-        <Button className='api-button' onClick={onStopRTMS}>
-          stopRTMS
-        </Button>
-
         {filteredApis?.map((api) => (
           <Button onClick={invokeZoomAppsSdk(api)} className='api-button' key={api.buttonName || api.name}>
             {' '}
