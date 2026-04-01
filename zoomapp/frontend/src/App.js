@@ -37,9 +37,9 @@ function App() {
             ...apis.map((api) => api.name), // IMPORTANT
 
             // demo events
-            'onSendAppInvitation',
-            'onShareApp',
-            'onActiveSpeakerChange',
+            // 'onSendAppInvitation',
+            // 'onShareApp',
+            // 'onActiveSpeakerChange',
             'onMeeting',
 
             // connect api and event
@@ -54,8 +54,8 @@ function App() {
             'promptAuthorize',
             'getUserContext',
             'onMyUserContextChange',
-            'sendAppInvitationToAllParticipants',
-            'sendAppInvitation',
+            // 'sendAppInvitationToAllParticipants',
+            // 'sendAppInvitation',
 
             // reaction events
             'onReaction',
@@ -63,8 +63,8 @@ function App() {
             'onEmojiReaction',
 
             // RTMS
-            'startRTMS',
-            'stopRTMS',
+            // 'startRTMS',
+            // 'stopRTMS',
           ],
           version: '0.16.0',
         })

@@ -28,16 +28,16 @@ const sortListByName = (curr, next) => {
 // New apis are constantly created and may not be included here
 // Please visit the Zoom Apps developer docs for comprehensive list
 const apis = [
-  {
-    name: 'setVirtualBackground',
-    options: {
-      fileUrl:
-        'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=983&q=80',
-    },
-  },
-  {
-    name: 'removeVirtualBackground',
-  },
+  // {
+  //   name: 'setVirtualBackground',
+  //   options: {
+  //     fileUrl:
+  //       'https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=983&q=80',
+  //   },
+  // },
+  // {
+  //   name: 'removeVirtualBackground',
+  // },
   {
     name: 'getSupportedJsApis',
   },
@@ -59,15 +59,15 @@ const apis = [
       message: 'Testing notification',
     },
   },
-  {
-    name: 'sendAppInvitationToAllParticipants',
-  },
-  {
-    name: 'sendAppInvitationToMeetingOwner',
-  },
-  {
-    name: 'showAppInvitationDialog',
-  },
+  // {
+  //   name: 'sendAppInvitationToAllParticipants',
+  // },
+  // {
+  //   name: 'sendAppInvitationToMeetingOwner',
+  // },
+  // {
+  //   name: 'showAppInvitationDialog',
+  // },
   {
     name: 'getMeetingParticipants',
   },
@@ -83,60 +83,60 @@ const apis = [
   {
     name: 'expandApp',
   },
-  {
-    name: 'allowParticipantToRecord',
-  },
-  {
-    name: 'getRecordingContext',
-  },
-  {
-    buttonName: 'cloudRecording (start)',
-    name: 'cloudRecording',
-    options: { action: 'start' },
-  },
-  {
-    buttonName: 'cloudRecording (stop)',
-    name: 'cloudRecording',
-    options: { action: 'stop' },
-  },
-  {
-    buttonName: 'cloudRecording (pause)',
-    name: 'cloudRecording',
-    options: { action: 'pause' },
-  },
-  {
-    buttonName: 'cloudRecording (resume)',
-    name: 'cloudRecording',
-    options: { action: 'resume' },
-  },
-  {
-    buttonName: 'setVideoMirrorEffect (true)',
-    name: 'setVideoMirrorEffect',
-    options: {
-      mirrorMyVideo: true,
-    },
-  },
-  {
-    buttonName: 'setVideoMirrorEffect (false)',
-    name: 'setVideoMirrorEffect',
-    options: {
-      mirrorMyVideo: false,
-    },
-  },
-  {
-    buttonName: 'shareApp (start)',
-    name: 'shareApp',
-    options: {
-      action: 'start',
-    },
-  },
-  {
-    buttonName: 'shareApp (stop)',
-    name: 'shareApp',
-    options: {
-      action: 'stop',
-    },
-  },
+  // {
+  //   name: 'allowParticipantToRecord',
+  // },
+  // {
+  //   name: 'getRecordingContext',
+  // },
+  // {
+  //   buttonName: 'cloudRecording (start)',
+  //   name: 'cloudRecording',
+  //   options: { action: 'start' },
+  // },
+  // {
+  //   buttonName: 'cloudRecording (stop)',
+  //   name: 'cloudRecording',
+  //   options: { action: 'stop' },
+  // },
+  // {
+  //   buttonName: 'cloudRecording (pause)',
+  //   name: 'cloudRecording',
+  //   options: { action: 'pause' },
+  // },
+  // {
+  //   buttonName: 'cloudRecording (resume)',
+  //   name: 'cloudRecording',
+  //   options: { action: 'resume' },
+  // },
+  // {
+  //   buttonName: 'setVideoMirrorEffect (true)',
+  //   name: 'setVideoMirrorEffect',
+  //   options: {
+  //     mirrorMyVideo: true,
+  //   },
+  // },
+  // {
+  //   buttonName: 'setVideoMirrorEffect (false)',
+  //   name: 'setVideoMirrorEffect',
+  //   options: {
+  //     mirrorMyVideo: false,
+  //   },
+  // },
+  // {
+  //   buttonName: 'shareApp (start)',
+  //   name: 'shareApp',
+  //   options: {
+  //     action: 'start',
+  //   },
+  // },
+  // {
+  //   buttonName: 'shareApp (stop)',
+  //   name: 'shareApp',
+  //   options: {
+  //     action: 'stop',
+  //   },
+  // },
 ].sort(sortListByName)
 
 module.exports = { apis, invokeZoomAppsSdk }
