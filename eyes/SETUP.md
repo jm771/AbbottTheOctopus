@@ -7,7 +7,7 @@ python sample_image.py
 
 
 ## Wiring:
-### Eye 1
+### Left Eye
 
 <table>
     <thead>
@@ -36,6 +36,40 @@ python sample_image.py
         </tr>
         <tr>
             <td>RST (Reset)</td><td>27</td><td>13</td>
+        </tr>
+    </tbody>
+</table>
+
+## Wiring:
+### Right Eye
+
+<table>
+    <thead>
+        <tr>
+            <td>LCD Label</td><td>GPIO Name</td><td>Raspberry Pi Zero 2 physical pin</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>VCC</td><td>3.3V</td><td>17</td>
+        </tr>
+        <tr>
+            <td>GND</td><td>GND</td><td>20</td>
+        </tr>
+        <tr>
+            <td>SDA (MOSI)</td><td>20 (spi1 MOSI)</td><td>38</td>
+        </tr>
+        <tr>
+            <td>SCL (CLK)</td><td>21 (spi1 SCLK)</td><td>40</td>
+        </tr>
+        <tr>
+            <td>CS</td><td>16 (spi1 CE2)</td><td>36</td>
+        </tr>
+        <tr>
+            <td>DC (Data/Command)</td><td>26</td><td>37</td>
+        </tr>
+        <tr>
+            <td>RST (Reset)</td><td>6</td><td>31</td>
         </tr>
     </tbody>
 </table>
