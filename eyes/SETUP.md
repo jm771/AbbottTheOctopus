@@ -5,6 +5,15 @@ Follow install instructions at: https://github.com/adafruit/Adafruit_CircuitPyth
 
 python sample_image.py
 
+To support the second eye - need to enable spi1 peripheral
+
+add this 
+
+dtoverlay=spi1-1cs
+
+to this:
+/boot/firmware/config.txt
+
 
 ## Wiring:
 ### Left Eye
