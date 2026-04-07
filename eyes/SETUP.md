@@ -1,10 +1,6 @@
 Make sure SPI is turned on (pi logo, preferences, control center)
 Follow install instructions at: https://github.com/adafruit/Adafruit_CircuitPython_RGB_Display/tree/main
 
-(If running on current machine, make sure the env is activated)
-
-python sample_image.py
-
 To support the second eye - need to enable spi1 peripheral
 
 add this 
@@ -14,6 +10,12 @@ dtoverlay=spi1-1cs
 to this:
 /boot/firmware/config.txt
 
+and reboot
+
+To run:
+
+make sure the env is activated and then run:
+python sample_image.py
 
 ## Wiring:
 ### Left Eye
