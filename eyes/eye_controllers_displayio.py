@@ -13,7 +13,9 @@ def make_left_eye_display():
 
     spi = busio.SPI(clock=SCK, MOSI=MOSI)
 
-    display = GC9A01A(spi, cs=digitalio.DigitalInOut(CS_PIN),
+    display = GC9A01A(spi,  width=240,
+                            height=240,
+                            cs=digitalio.DigitalInOut(CS_PIN),
                             dc=digitalio.DigitalInOut(DC_PIN), rst=digitalio.DigitalInOut(RST_PIN))
     
     return display
@@ -25,7 +27,10 @@ def make_right_eye_display():
     RST_PIN = D6
 
     spi = busio.SPI(clock=SCK_1, MOSI=MOSI_1)
-    display = GC9A01A(spi, cs=digitalio.DigitalInOut(CS_PIN),
-                            dc=digitalio.DigitalInOut(DC_PIN), rst=digitalio.DigitalInOut(RST_PIN))
+    display = GC9A01A(spi, width=240,
+                           height=240,
+                           cs=digitalio.DigitalInOut(CS_PIN),
+                           dc=digitalio.DigitalInOut(DC_PIN),
+                           rst=digitalio.DigitalInOut(RST_PIN))
     
     return display
