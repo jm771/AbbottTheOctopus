@@ -1,6 +1,6 @@
 
 import time
-from eyes.eye_controllers_displayio import make_left_eye_display, make_right_eye_display
+from eye_controllers_displayio import make_left_eye_display, make_right_eye_display
 from adafruit_rgb_display import color565
 
 # Import adafruit image management library
