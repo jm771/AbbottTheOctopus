@@ -23,8 +23,8 @@ image1 = image1.crop((x, y, x + width, y + height))
 
 currentX = 0
 currentY = 0
-targetX = 100
-targetY = 100
+targetX = 60
+targetY = 60
 speed = 3
 
 
