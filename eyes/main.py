@@ -1,5 +1,4 @@
 from time import sleep
-import os
 import sys
 import select
 
@@ -7,12 +6,14 @@ import select
 from eye_controllers import make_left_eye_display, make_right_eye_display
 from animations.excited import ExcitedAnimation
 from animations.moving_eyes import IdleEyesAnimation
+from animations.heart import HeartAnimation
 
 left_display = make_left_eye_display()
 right_display = make_right_eye_display()
 
 idle_animation = IdleEyesAnimation(left_display.width, left_display.height)
 excited_animation = ExcitedAnimation(left_display.width, left_display.height)
+heart_animation = HeartAnimation(left_display.width, left_display.height)
 
 def play_animation(animation):
     assert animation.length() is not None, f"animation has no length - can't be played one time"
@@ -24,6 +25,8 @@ def play_animation(animation):
 def select_animation(character):
     if character == 'e':
         return excited_animation
+    if character == 'h':
+        return heart_animation
 
     return None
 
