@@ -3,7 +3,7 @@ import os
 import sys
 
 from eye_controllers import make_left_eye_display, make_right_eye_display
-from eyes.animations.excited import ExcitedAnimation
+from animations.excited import ExcitedAnimation
 from animations.moving_eyes import IdleEyesAnimation
 
 left_display = make_left_eye_display()
