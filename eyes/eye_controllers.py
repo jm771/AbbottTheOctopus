@@ -1,10 +1,11 @@
-
 import busio
 import digitalio
 from board import SCK, SCK_1, MOSI, MOSI_1, D25, D8, D27, D16, D26, D6
 
 
 from adafruit_rgb_display.gc9a01a import GC9A01A
+
+# maybe check specs for double-buffering?
 
 def make_left_eye_display():
     # Configuration for CS and DC pins:
