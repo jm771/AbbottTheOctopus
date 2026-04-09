@@ -25,7 +25,7 @@ currentX = 0
 currentY = 0
 targetX = 60
 targetY = 60
-speed = 3
+speed = 10
 
 
 while True:
