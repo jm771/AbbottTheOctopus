@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
-class Animation(ABCMeta):
+class Animation(metaclass=ABCMeta):
     @abstractmethod
     def reset(self):
         pass
