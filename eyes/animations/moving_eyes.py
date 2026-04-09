@@ -1,30 +1,15 @@
 
-import time
 from typing import Optional
-from PIL import Image
 import random
 import math
-from animation import Animation
+from animations.animation import Animation
+from animations.eye_image import load_and_scale_eye_image
 
 class IdleEyesAnimation(Animation):
     def __init__(self, displayWidth, displayHeight):
-        self.currentX = 0
-        self.currentY = 0
-        self.targetX = 0
-        self.targetY = 0
-        self.speed = 0
-        self.sustain = 3
+        self.reset()
+        self.baseImage = load_and_scale_eye_image(displayWidth, displayHeight)
 
-        width = displayWidth
-        height = displayHeight
-
-        image1 = Image.open("Eye.png")
-        scaled_width = width
-        scaled_height = image1.height * width // image1.width
-        image1 = image1.resize((scaled_width, scaled_height), Image.BICUBIC)
-        x = scaled_width // 2 - width // 2
-        y = scaled_height // 2 - height // 2
-        self.baseImage = image1.crop((x, y, x + width, y + height))
 
     def reset(self):
         self.currentX = 0
@@ -60,5 +45,3 @@ class IdleEyesAnimation(Animation):
         left_eye.image(im)
         right_eye.image(im)
   
-
-
