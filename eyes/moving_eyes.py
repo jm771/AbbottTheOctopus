@@ -29,8 +29,10 @@ speed = 10
 
 
 while True:
-    # if random.randint % 100 == 0:
-    #     targetX 
+    if random.randint() % 100 == 0:
+        targetX = random.randint(-60, 60)
+        targetY = random.randint(-60, 60)
+        speed = random.randint(1, 10)
 
     if abs(currentX - targetX) <= speed:
         currentX = targetX
