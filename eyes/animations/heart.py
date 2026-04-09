@@ -21,7 +21,7 @@ class HeartAnimation(Animation):
         return 15
 
     def display_frame(self, left_eye, right_eye, frame_number):
-        idx = (frame_number // 2) % 3
+        idx = (frame_number // 5) % 3
         im = self.images[idx]
         
         left_eye.fill(WHITE)
