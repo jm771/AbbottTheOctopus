@@ -12,10 +12,10 @@ class ExcitedAnimation(Animation):
 
     # Animation length in frames, None -> infinite
     def length(self) -> Optional[int]:
-        return 20
+        return 15
 
     def display_frame(self, left_eye, right_eye, frame_number):
-        OFFSET_Y = -50
+        OFFSET_Y = -40
         offset_x = -20 if frame_number % 2 == 0 else 20
 
         im = self.baseImage.rotate(0, translate=[offset_x, OFFSET_Y], fillcolor=0xffffff) 

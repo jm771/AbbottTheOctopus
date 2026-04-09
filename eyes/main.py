@@ -1,6 +1,8 @@
 from time import sleep
 import os
 import sys
+import select
+
 
 from eye_controllers import make_left_eye_display, make_right_eye_display
 from animations.excited import ExcitedAnimation
@@ -13,8 +15,8 @@ idle_animation = IdleEyesAnimation(left_display.width, left_display.height)
 excited_animation = ExcitedAnimation(left_display.width, left_display.height)
 
 def play_animation(animation):
-    assert animation.length is not None, f"animation has no length - can't be played one time"
-    for i in range (0, animation.length):
+    assert animation.length() is not None, f"animation has no length - can't be played one time"
+    for i in range (0, animation.length()):
         animation.display_frame(left_display, right_display, i)
         sleep(0.1)
     animation.reset()
@@ -25,9 +27,15 @@ def select_animation(character):
 
     return None
 
+def readline_nonblocking():
+    if select.select([sys.stdin], [], [], 0)[0]:
+        return sys.stdin.readline().rstrip()
+
+    return None
+
 i = 0
 while True:
-    animation = select_animation(os.read(sys.stdin.fileno(), 1))
+    animation = select_animation(readline_nonblocking())
 
     if animation is not None:
         idle_animation.reset()
