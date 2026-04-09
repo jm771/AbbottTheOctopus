@@ -2,6 +2,9 @@
 from typing import Optional
 from animations.animation import Animation
 from animations.eye_image import load_and_scale_eye_image, scale_image
+from adafruit_rgb_display import color565
+
+WHITE = color565(0xff, 0xff, 0xff)
 
 class HeartAnimation(Animation):
     def __init__(self, displayWidth, displayHeight):
@@ -20,8 +23,9 @@ class HeartAnimation(Animation):
     def display_frame(self, left_eye, right_eye, frame_number):
         idx = (frame_number // 2) % 3
         im = self.images[idx]
-        left_eye.fill(0xffffff)
-        right_eye.fill(0xffffff)
+        
+        left_eye.fill(WHITE)
+        right_eye.fill(WHITE)
         left_eye.image(im)
         right_eye.image(im)
   
