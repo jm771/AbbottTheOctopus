@@ -13,7 +13,8 @@ class HeartAnimation(Animation):
         baseImage = scale_image(Image.open("heart.png"), DISPLAY_WIDTH, DISPLAY_HEIGHT)
         halfSize = scale_image(baseImage, baseImage.width//2, baseImage.height//2)
         thirdSize = scale_image(baseImage, baseImage.width//3, baseImage.height//3)
-        self.images = [thirdSize, halfSize, baseImage]
+        twoThirdSize = scale_image(baseImage, baseImage.width * 2 // 3, baseImage.height * 2//3)
+        self.images = [thirdSize, halfSize, twoThirdSize]
 
     def reset(self):
         pass
@@ -29,8 +30,11 @@ class HeartAnimation(Animation):
 
         idx = (frame_number // 5) % 3
         im = self.images[idx]
-        x = DISPLAY_WIDTH // 2 - im.witdh // 2
-        y = DISPLAY_HEIGHT // 2 - im.height // 2
+        center_x = DISPLAY_WIDTH // 2
+        center_y = DISPLAY_HEIGHT // 2
+
+        x = center_x - im.witdh // 2
+        y = center_y - im.height // 2
 
         left_eye.image(im, x=x, y=y)
         right_eye.image(im, x=x, y=y)
