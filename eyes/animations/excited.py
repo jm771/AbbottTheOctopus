@@ -1,8 +1,6 @@
 
 from typing import Optional
-import random
-import math
-from animation import Animation
+from animations.animation import Animation
 from eyes.animations.eye_image import load_and_scale_eye_image
 
 class ExcitedAnimation(Animation):
