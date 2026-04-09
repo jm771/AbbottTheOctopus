@@ -20,6 +20,8 @@ class HeartAnimation(Animation):
     def display_frame(self, left_eye, right_eye, frame_number):
         idx = (frame_number // 2) % 3
         im = self.images[idx]
+        left_eye.fill(0xffffff)
+        right_eye.fill(0xffffff)
         left_eye.image(im)
         right_eye.image(im)
   
