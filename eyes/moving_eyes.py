@@ -1,55 +1,64 @@
 
 import time
-from eye_controllers import make_left_eye_display, make_right_eye_display
+from typing import Optional
 from PIL import Image
 import random
 import math
+from animation import Animation
 
-display1 = make_left_eye_display()
-display2 = make_right_eye_display()
+class IdleEyesAnimation(Animation):
+    def __init__(self, displayWidth, displayHeight):
+        self.currentX = 0
+        self.currentY = 0
+        self.targetX = 0
+        self.targetY = 0
+        self.speed = 0
+        self.sustain = 3
 
-width = display1.width
-height = display1.height
+        width = displayWidth
+        height = displayHeight
 
-image1 = Image.open("Eye.png")
-image_ratio = image1.width / image1.height
-screen_ratio = width / height
-scaled_width = width
-scaled_height = image1.height * width // image1.width
-image1 = image1.resize((scaled_width, scaled_height), Image.BICUBIC)
-x = scaled_width // 2 - width // 2
-y = scaled_height // 2 - height // 2
-image1 = image1.crop((x, y, x + width, y + height))
+        image1 = Image.open("Eye.png")
+        scaled_width = width
+        scaled_height = image1.height * width // image1.width
+        image1 = image1.resize((scaled_width, scaled_height), Image.BICUBIC)
+        x = scaled_width // 2 - width // 2
+        y = scaled_height // 2 - height // 2
+        self.baseImage = image1.crop((x, y, x + width, y + height))
 
-currentX = 0
-currentY = 0
-targetX = 60
-targetY = 60
-speed = 10
-sustain = 50
+    def reset(self):
+        self.currentX = 0
+        self.currentY = 0
+        self.targetX = 0
+        self.targetY = 0
+        self.speed = 0
+        self.sustain = 3
+
+    # Animation length in frames, None -> infinite
+    def length(self) -> Optional[int]:
+        return None
+
+    def display_frame(self, left_eye, right_eye, frame_number):
+        self.sustain -= 1
+        if self.sustain == 0:
+            self.targetX = random.randint(-50, 50)
+            self.targetY = random.randint(-50, 50)
+            self.speed = random.randint(1, 10)
+            self.sustain = random.randint(2, 20)
+
+        if abs(self.currentX - self.targetX) <= self.speed:
+            self.currentX = self.targetX
+        else:
+            self.currentX += math.copysign(self.speed, self.targetX - self.currentX)
+        if abs(self.currentY - self.targetY) <= self.speed:
+            self.currentY = self.targetY
+        else:
+            self.currentY += math.copysign(self.speed, self.targetY - self.currentY)
 
 
-while True:
-    sustain -= 1
-    if sustain == 0:
-        targetX = random.randint(-50, 50)
-        targetY = random.randint(-50, 50)
-        speed = random.randint(1, 10)
-        sustain = random.randint(2, 20)
-
-    if abs(currentX - targetX) <= speed:
-        currentX = targetX
-    else:
-        currentX += math.copysign(speed, targetX - currentX)
-    if abs(currentY - targetY) <= speed:
-        currentY = targetY
-    else:
-        currentY += math.copysign(speed, targetY - currentY)
-
-
-    im = image1.rotate(0, translate=[currentX, currentY], fillcolor=0xffffff) 
-    display1.image(im)
-    display2.image(im)
-    time.sleep(0.1)
+        im = self.baseImage.rotate(0, translate=[self.currentX, self.currentY], fillcolor=0xffffff) 
+        left_eye.image(im)
+        right_eye.image(im)
+  
 
 
