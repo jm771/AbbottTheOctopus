@@ -29,7 +29,7 @@ speed = 10
 
 
 while True:
-    if random.randint() % 100 == 0:
+    if random.randint(0, 99) == 0:
         targetX = random.randint(-60, 60)
         targetY = random.randint(-60, 60)
         speed = random.randint(1, 10)
