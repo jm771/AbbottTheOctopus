@@ -35,7 +35,7 @@ while True:
         targetX = random.randint(-60, 60)
         targetY = random.randint(-60, 60)
         speed = random.randint(1, 10)
-        sustain = random.randint(10, 70)
+        sustain = random.randint(2, 20)
 
     if abs(currentX - targetX) <= speed:
         currentX = targetX
