@@ -1,7 +1,7 @@
 
 from typing import Optional
 from animations.animation import Animation
-from eyes.animations.eye_image import load_and_scale_eye_image
+from animations.eye_image import load_and_scale_eye_image
 
 class ExcitedAnimation(Animation):
     def __init__(self, displayWidth, displayHeight):
