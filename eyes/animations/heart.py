@@ -31,7 +31,8 @@ class HeartAnimation(Animation):
         idx = (frame_number // 5) % 3
         im = self.images[idx]
         center_x = DISPLAY_WIDTH // 2
-        center_y = DISPLAY_HEIGHT // 2
+        # looks better a little lower
+        center_y = DISPLAY_HEIGHT // 2 + 10
 
         x = center_x - im.width // 2
         y = center_y - im.height // 2
