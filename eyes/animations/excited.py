@@ -2,10 +2,11 @@
 from typing import Optional
 from animations.animation import Animation
 from animations.eye_image import load_and_scale_eye_image
+from display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 
 class ExcitedAnimation(Animation):
-    def __init__(self, displayWidth, displayHeight):
-        self.baseImage = load_and_scale_eye_image(displayWidth, displayHeight)
+    def __init__(self):
+        self.baseImage = load_and_scale_eye_image(DISPLAY_WIDTH, DISPLAY_HEIGHT)
 
     def reset(self):
         pass

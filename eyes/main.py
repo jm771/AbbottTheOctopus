@@ -11,9 +11,9 @@ from animations.heart import HeartAnimation
 left_display = make_left_eye_display()
 right_display = make_right_eye_display()
 
-idle_animation = IdleEyesAnimation(left_display.width, left_display.height)
-excited_animation = ExcitedAnimation(left_display.width, left_display.height)
-heart_animation = HeartAnimation(left_display.width, left_display.height)
+idle_animation = IdleEyesAnimation()
+excited_animation = ExcitedAnimation()
+heart_animation = HeartAnimation()
 
 def play_animation(animation):
     assert animation.length() is not None, f"animation has no length - can't be played one time"
