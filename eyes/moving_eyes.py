@@ -32,8 +32,8 @@ sustain = 50
 while True:
     sustain -= 1
     if sustain == 0:
-        targetX = random.randint(-60, 60)
-        targetY = random.randint(-60, 60)
+        targetX = random.randint(-50, 50)
+        targetY = random.randint(-50, 50)
         speed = random.randint(1, 10)
         sustain = random.randint(2, 20)
 
