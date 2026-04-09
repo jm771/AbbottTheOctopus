@@ -28,7 +28,7 @@ class HeartAnimation(Animation):
 
         idx = (frame_number // 5) % 3
         im = self.images[idx]
-        x = DISPLAY_WIDTH // 2 - im.witdh // 2
+        x = DISPLAY_WIDTH // 2 - im.width // 2
         y = DISPLAY_HEIGHT // 2 - im.height // 2
 
         left_eye.image(im, x=x, y=y)
