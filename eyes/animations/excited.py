@@ -20,6 +20,7 @@ class ExcitedAnimation(Animation):
         offset_x = -20 if frame_number % 2 == 0 else 20
 
         im = self.baseImage.rotate(0, translate=[offset_x, OFFSET_Y], fillcolor=0xffffff) 
+        im1 = self.baseImage.rotate(0, translate=[-offset_x, OFFSET_Y], fillcolor=0xffffff) 
         left_eye.image(im)
-        right_eye.image(im)
+        right_eye.image(im1)
   
