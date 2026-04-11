@@ -1,10 +1,21 @@
 from abc import ABCMeta, abstractmethod
+from datetime import datetime, timedelta
 import enum
-from typing import Optional
+import math
+from arms.arm_animation import ArmAnimation
+from arms.arm_controler import make_arm_controllers
+from arms.big_wave_animation import BigWaveAnimation
+from arms.idle_animation import IdleArmAnimation
+from arms.raise_arms_animation import RaiseArmsAnimation
 from eyes.animations.animation import EyeAnimation
+from eyes.eye_controllers import make_left_eye_display, make_right_eye_display
+from eyes.animations.excited import ExcitedAnimation
+from eyes.animations.moving_eyes import IdleEyesAnimation
+from eyes.animations.heart import HeartAnimation
 
 
-class ReactionType(enum.Enum):
+
+class ReactionType:
     Excited = "Excited"
     Love = "Love"
 
@@ -25,7 +36,7 @@ class ReactionSubManager(ABCMeta):
     def play_animation_frame(self, frame: int):
         pass
 
-class ArmReactionManager(ReactionSubManager):
+class EyesReactionManager(ReactionSubManager):
     # We DI this because might want to test on PC with fake displays
     def __init__(self, left_display, right_display):
         self._left_display = left_display
@@ -39,7 +50,7 @@ class ArmReactionManager(ReactionSubManager):
         }
         self.active_animation: EyeAnimation = self.idle_animation
 
-    def idle(self,):
+    def idle(self):
         self.active_animation.reset()
         self.active_animation = self.idle_animation
 
@@ -51,65 +62,125 @@ class ArmReactionManager(ReactionSubManager):
     
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
-        self.active_animation = self.animations[ReactionType]
+        self.active_animation = self.animations[reactionType]
 
 
     def play_animation_frame(self, frame: int):
-        self.active_animation.display_frame(self._left_display, self._right_display, frame)
+        # Downsample frames for now - to stop the display looking too jank
+        if frame % 6 == 0:
+            # loop animation if we play past the end
+            looped_frame = frame % self.active_animation.length()
 
+            self.active_animation.display_frame(self._left_display, self._right_display, looped_frame)
 
-def make_arm_reaction_manager():
-    return ArmReactionManager(make_left_eye_display(), make_right_eye_display())
-
-from time import sleep
-import sys
-import select
-
-
-from eye_controllers import make_left_eye_display, make_right_eye_display
-from animations.excited import ExcitedAnimation
-from animations.moving_eyes import IdleEyesAnimation
-from animations.heart import HeartAnimation
-
-
-
-def play_animation(animation):
-    assert animation.length() is not None, f"animation has no length - can't be played one time"
-    for i in range (0, animation.length()):
-        animation.display_frame(left_display, right_display, i)
-        sleep(0.1)
-    animation.reset()
-
-def select_animation(character):
-    if character == 'e':
-        return excited_animation
-    if character == 'h':
-        return heart_animation
-
-    return None
-
-def readline_nonblocking():
-    if select.select([sys.stdin], [], [], 0)[0]:
-        return sys.stdin.readline().rstrip()
-
-    return None
-
-i = 0
-while True:
-    animation = select_animation(readline_nonblocking())
-
-    if animation is not None:
-        idle_animation.reset()
-        i = 0
-        play_animation(animation)
-
-    idle_animation.display_frame(left_display, right_display, i)
-    i+=1
-    sleep(0.1)
-
-
-class EyesReactionManager(ReactionSubManager):
-    pass
 
 def make_eyes_reaction_manager():
-    pass
+    return EyesReactionManager(make_left_eye_display(), make_right_eye_display())
+
+
+
+class ArmsReactionManager(ReactionSubManager):
+    # We DI this because might want to test on PC with fake displays
+    def __init__(self, left_arm, right_arm):
+        self._left_arm = left_arm
+        self._right_arm = right_arm
+
+        # Could definitely have a few and pick randomly or sth
+        self.idle_animation = IdleArmAnimation()
+        self.animations: dict[ReactionType, ArmAnimation] = {
+            ReactionType.Excited: BigWaveAnimation(),
+            ReactionType.Love: RaiseArmsAnimation()
+        }
+        self.active_animation: ArmAnimation = self.idle_animation
+
+    def idle(self):
+        self.active_animation.reset()
+        self.active_animation = self.idle_animation
+
+
+    def get_animation_length(self, reactionType) -> int:
+        len = self.animations[reactionType].length()
+        assert len is not None, "Set up an infinite animation in the reactions interface"
+        return len
+    
+    def start_animation(self, reactionType: ReactionType):
+        self.active_animation.reset()
+        self.active_animation = self.animations[reactionType]
+
+
+    def play_animation_frame(self, frame: int):
+        # Idle if we go past the end of the animation:
+        if self.active_animation.length is None or frame < self.active_animation.length():
+            self.active_animation.display_frame(self._left_arm, self._right_arm, frame)
+        else:
+            self.idle()
+
+def make_arms_reaction_manager():
+    return ArmsReactionManager(*make_arm_controllers())
+
+def td_to_micros(td: timedelta):
+    return td.seconds * 1_000_000 + td.microseconds
+
+class ReactionStateManager():
+    _MICROS_PER_FRAME = 1_000_000 // 60
+
+    def __init__(self, sub_managers: list[ReactionSubManager]):
+        self._sub_managers = sub_managers
+        self._current_animation_length = 0
+        self._queued_reactions: list[ReactionType] = []
+        self._animation_start_time = datetime.now()
+        self._idle()
+
+    def _idle(self):
+        self._is_idle = True
+        self._last_frame = -1
+
+        for manager in self._sub_managers:
+            manager.idle()
+
+    def _start_next_animation(self):
+        self._current_animation_length = max(m.length() for m in self._sub_managers)
+        self._animation_start_time = datetime.now()
+        self._last_frame = -1
+
+        for manager in self._sub_managers():
+            manager.start_animation(self._queued_reactions[0])
+
+    def _get_current_frame(self):
+        return math.floor(td_to_micros(datetime.now() - self._animation_start_time) // self._MICROS_PER_FRAME)
+
+    def _maybe_push_animation_frame(self):
+        current_frame = self._get_current_frame()
+        if current_frame == self._last_frame:
+            return
+        if current_frame > self._last_frame + 1:
+            print("Missed a frame - does an animation have lots of compute?")
+        
+        for manager in self._sub_managers:
+            manager.play_animation_frame(current_frame)
+
+        self._last_frame = current_frame
+            
+
+    def queue_reaction(self, reaction_type: ReactionType):
+        if reaction_type not in self._queued_reactions:
+            self._queued_reactions.append(reaction_type)
+
+    def poll(self):
+        if self._is_idle == True:
+            if len(self._queued_reactions) > 0:
+                self._start_next_animation()
+        else:
+            if self._get_current_frame() >= self._current_animation_length:
+                self._queued_reactions = self._queued_reactions[1:]
+                if len(self._queued_reactions == 0):
+                    self._idle()
+                else:
+                    self._start_next_animation()
+
+        self._maybe_push_animation_frame()
+
+
+    def empty_queue(self):
+        self._queued_reactions = []
+        self._idle()
