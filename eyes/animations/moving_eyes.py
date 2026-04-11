@@ -2,8 +2,8 @@
 from typing import Optional
 import random
 import math
-from animations.animation import EyeAnimation
-from animations.eye_image import load_and_scale_eye_image
+from eyes.animations.animation import EyeAnimation
+from eyes.animations.eye_image import load_and_scale_eye_image
 from display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 
 class IdleEyesAnimation(EyeAnimation):

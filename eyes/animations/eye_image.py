@@ -10,6 +10,6 @@ def scale_image(image1, width, height):
 
 
 def load_and_scale_eye_image(displayWidth, displayHeight):
-    image1 = Image.open("Eye.png")
+    image1 = Image.open("eyes/Eye.png")
     return scale_image(image1, displayWidth, displayHeight)
 
