@@ -12,12 +12,9 @@
     compatible = "brcm,bcm2835";
 
     fragment@0 {
-        target = <&spi0>;
+        target = <&spidev0>;
         __overlay__ {
-            status = "okay";
-            spidev@0 {
-                status = "disabled";
-            };
+            status = "disabled";
         };
     };
 
@@ -118,7 +115,7 @@
     };
 
     /* Fragment to disable LED GPIO if led_gpio is set to 255 */
-    fragment@3 {
+    fragment_led_disable: fragment@3 {
         target = <&gc9a01>;
         __dormant__ {
             led-gpios = <>;
