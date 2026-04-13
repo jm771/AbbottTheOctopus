@@ -69,7 +69,7 @@ class EyesReactionManager(ReactionSubManager):
         # Downsample frames for now - to stop the display looking too jank
         if frame % 6 == 0:
             # loop animation if we play past the end
-            looped_frame = frame % self.active_animation.length()
+            looped_frame = frame if self.active_animation.length() is None else frame % self.active_animation.length()
 
             self.active_animation.display_frame(self._left_display, self._right_display, looped_frame)
 
