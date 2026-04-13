@@ -4,6 +4,8 @@ This version uses Linux framebuffer devices instead of direct SPI communication.
 Requires the gc9a01-configurable overlay to be loaded and configured.
 """
 
+from datetime import datetime
+
 from PIL import Image
 import mmap
 import struct
@@ -70,7 +72,9 @@ class FramebufferDisplay:
 
         # Write to framebuffer
         self.fb_mmap.seek(0)
+        s = datetime.now()
         self.fb_mmap.write(fb_data)
+        print(f"write took {datetime.now() - s}")
 
     def fill(self, color=0):
         """
