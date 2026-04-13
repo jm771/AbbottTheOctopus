@@ -47,6 +47,7 @@ class FramebufferDisplay:
         Args:
             img: PIL Image object (will be resized if needed)
         """
+        s1 = datetime.now()
         # Resize if necessary
         if img.size != (self.width, self.height):
             img = img.resize((self.width, self.height), Image.LANCZOS)
@@ -70,9 +71,12 @@ class FramebufferDisplay:
                 offset = (y * self.width + x) * 2
                 struct.pack_into('<H', fb_data, offset, rgb565)
 
+        print(f"logic took {datetime.now() - s1}")
+
+        s = datetime.now()
         # Write to framebuffer
         self.fb_mmap.seek(0)
-        s = datetime.now()
+       
         self.fb_mmap.write(fb_data)
         print(f"write took {datetime.now() - s}")
 
