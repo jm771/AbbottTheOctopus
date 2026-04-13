@@ -24,7 +24,7 @@ class ArmController:
 
 
 def make_arm_controllers():
-    i2c = busio.I2C()
+    i2c = board.I2C()
     pca = PCA9685(i2c)
     pca.frequency = 60
 
