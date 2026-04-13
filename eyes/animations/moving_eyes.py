@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from typing import Optional
 import random
 import math
@@ -51,6 +52,12 @@ class IdleEyesAnimation(EyeAnimation):
 
 
         im = self.baseImage.rotate(0, translate=[self.currentX, self.currentY], fillcolor=0xffffff) 
+
+        t1 = datetime.now()
         left_eye.image(im)
+        t2 = datetime.now()
         right_eye.image(im)
+        t3 = datetime.now()
+
+        print(f"display times {t3 - t2} {t2 - t1}")
   
