@@ -78,6 +78,8 @@ dtoverlay=gc9a01-configurable,param=value
 ```
 # In /boot/config.txt:
 
+dtoverlay=spi1-1cs
+
 # Left eye on SPI0 (default)
 dtoverlay=gc9a01-configurable,dc_gpio=25,reset_gpio=27,led_gpio=255
 
@@ -85,6 +87,8 @@ dtoverlay=gc9a01-configurable,dc_gpio=25,reset_gpio=27,led_gpio=255
 dtoverlay=gc9a01-configurable,spi=1,dc_gpio=26,reset_gpio=6,led_gpio=255
 ```
 This creates `/dev/fb0` for the left eye and `/dev/fb1` for the right eye.
+
+**Note:** You must enable SPI1 with `dtoverlay=spi1-1cs` (or `spi1-2cs`/`spi1-3cs`) before using `spi=1`.
 
 ### Example 2: Different GPIO pins with backlight disabled
 ```

@@ -134,8 +134,8 @@
 
     __overrides__ {
         /* SPI interface selection (0=SPI0, 1=SPI1) */
-        spi =           <0>,"-0+1";      /* If spi=1: disable fragment@0 (spidev0), enable fragment@1 (spidev1) */
-        spi1 =          <&frag3>,"target-path=/soc/spi@7e215080";  /* Point fragment@3 to SPI1 */
+        spi =           <0>,"-0+1",      /* If spi=1: disable fragment@0 (spidev0), enable fragment@1 (spidev1) */
+                        <&frag3>,"target-path=/soc/spi@7e215080";  /* If spi=1: Point fragment@3 to SPI1 */
 
         /* Display parameters */
         speed =         <&gc9a01>,"spi-max-frequency:0";
