@@ -34,11 +34,4 @@ def make_right_eye_display():
                             cs=digitalio.DigitalInOut(CS_PIN),
                             dc=digitalio.DigitalInOut(DC_PIN), rst=digitalio.DigitalInOut(RST_PIN))
     
-    while not spi.try_lock():
-        pass
-
-    spi.configure(baudrate=40_000_000)  # try 40 MHz
-
-    spi.unlock()
-    
     return display
