@@ -20,6 +20,12 @@ class ReactionType:
     Love = "Love"
 
 class ReactionSubManager(metaclass=ABCMeta):
+    @property
+    @abstractmethod
+    def name(self,):
+        pass
+
+
     @abstractmethod
     def idle(self,):
         pass
@@ -41,6 +47,7 @@ class EyesReactionManager(ReactionSubManager):
     def __init__(self, left_display, right_display):
         self._left_display = left_display
         self._right_display = right_display
+        self.name = "eyes"
 
         # Could definitely have a few and pick randomly or sth
         self.idle_animation = IdleEyesAnimation()
@@ -84,6 +91,7 @@ class ArmsReactionManager(ReactionSubManager):
     def __init__(self, left_arm, right_arm):
         self._left_arm = left_arm
         self._right_arm = right_arm
+        self.name = "arms"
 
         # Could definitely have a few and pick randomly or sth
         self.idle_animation = IdleArmAnimation()
@@ -157,7 +165,10 @@ class ReactionStateManager():
             print(f"Missed a frame rendering {current_frame}, last frame was {self._last_frame} does animation have lots of compute?")
         
         for manager in self._sub_managers:
+            start = datetime.now()
             manager.play_animation_frame(current_frame)
+            end = datetime.now()
+            print(f"manager {manager.name} took {end - start}")
 
         self._last_frame = current_frame
             
