@@ -1,6 +1,6 @@
 
 import time
-from eye_controllers import make_left_eye_display, make_right_eye_display
+from eyes.eye_controllers import make_left_eye_display, make_right_eye_display
 from PIL import Image
 
 display1 = make_left_eye_display()

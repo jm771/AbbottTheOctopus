@@ -1,6 +1,6 @@
 
 import time
-from eye_controllers import make_left_eye_display, make_right_eye_display
+from eyes.eye_controllers import make_left_eye_display, make_right_eye_display
 from adafruit_rgb_display import color565
 
 display1 = make_left_eye_display()
