@@ -10,6 +10,7 @@ from PIL import Image
 import mmap
 import struct
 import os
+import numpy as np
 
 class FramebufferDisplay:
     """
@@ -56,27 +57,26 @@ class FramebufferDisplay:
         if img.mode != 'RGB':
             img = img.convert('RGB')
 
-        # Convert to RGB565 format
-        pixels = img.load()
-        fb_data = bytearray(self.fb_size)
+        # Convert PIL Image to numpy array (height x width x 3)
+        rgb_array = np.array(img, dtype=np.uint8)
 
-        for y in range(self.height):
-            for x in range(self.width):
-                r, g, b = pixels[x, y]
+        # Extract R, G, B channels
+        r = rgb_array[:, :, 0].astype(np.uint16)
+        g = rgb_array[:, :, 1].astype(np.uint16)
+        b = rgb_array[:, :, 2].astype(np.uint16)
 
-                # Convert 8-bit RGB to 5-6-5 format
-                rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+        # Convert to RGB565 using vectorized operations
+        rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
-                # Write as little-endian 16-bit value
-                offset = (y * self.width + x) * 2
-                struct.pack_into('<H', fb_data, offset, rgb565)
+        # Convert to little-endian bytes
+        fb_data = rgb565.astype('<u2').tobytes()
 
         print(f"logic took {datetime.now() - s1}")
 
         s = datetime.now()
         # Write to framebuffer
         self.fb_mmap.seek(0)
-       
+
         self.fb_mmap.write(fb_data)
         print(f"write took {datetime.now() - s}")
 
