@@ -47,7 +47,6 @@ class EyesReactionManager(ReactionSubManager):
     def __init__(self, left_display, right_display):
         self._left_display = left_display
         self._right_display = right_display
-        self.name = "eyes"
 
         # Could definitely have a few and pick randomly or sth
         self.idle_animation = IdleEyesAnimation()
@@ -56,6 +55,10 @@ class EyesReactionManager(ReactionSubManager):
             ReactionType.Love: HeartAnimation()
         }
         self.active_animation: EyeAnimation = self.idle_animation
+    
+    @property
+    def name(self):
+        return "eyes"
 
     def idle(self):
         self.active_animation.reset()
@@ -91,7 +94,6 @@ class ArmsReactionManager(ReactionSubManager):
     def __init__(self, left_arm, right_arm):
         self._left_arm = left_arm
         self._right_arm = right_arm
-        self.name = "arms"
 
         # Could definitely have a few and pick randomly or sth
         self.idle_animation = IdleArmAnimation()
@@ -100,6 +102,10 @@ class ArmsReactionManager(ReactionSubManager):
             ReactionType.Love: RaiseArmsAnimation()
         }
         self.active_animation: ArmAnimation = self.idle_animation
+
+    @property
+    def name(self):
+        return "arms"
 
     def idle(self):
         self.active_animation.reset()
