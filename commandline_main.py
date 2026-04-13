@@ -3,7 +3,7 @@ import sys
 import select
 from reaction_state_manager import ReactionStateManager, ReactionType, make_arms_reaction_manager, make_eyes_reaction_manager
 
-ReactionManager = ReactionStateManager(make_eyes_reaction_manager(), make_arms_reaction_manager())
+ReactionManager = ReactionStateManager([make_eyes_reaction_manager(), make_arms_reaction_manager()])
 
 
 def select_reaction(character):
