@@ -4,7 +4,7 @@ import random
 import math
 from eyes.animations.animation import EyeAnimation
 from eyes.animations.eye_image import load_and_scale_eye_image
-from display import DISPLAY_WIDTH, DISPLAY_HEIGHT
+from eyes.display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 
 class IdleEyesAnimation(EyeAnimation):
     def __init__(self):
