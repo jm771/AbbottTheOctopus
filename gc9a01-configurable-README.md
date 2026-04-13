@@ -51,6 +51,9 @@ Setting `led_gpio=255` removes the `led-gpios` property from the device tree, ef
 dtoverlay=gc9a01-configurable,param=value
 ```
 
+**SPI Interface Selection:**
+- `spi` - SPI interface to use: 0=SPI0 (default), 1=SPI1
+
 **Display Parameters:**
 - `speed` - SPI bus speed (default: 40000000)
 - `rotate` - Display rotation: 0, 90, 180, 270 (default: 0)
@@ -71,19 +74,31 @@ dtoverlay=gc9a01-configurable,param=value
 
 ## Examples
 
-### Example 1: Different GPIO pins with backlight disabled
+### Example 1: Two displays on SPI0 and SPI1
+```
+# In /boot/config.txt:
+
+# Left eye on SPI0 (default)
+dtoverlay=gc9a01-configurable,dc_gpio=25,reset_gpio=27,led_gpio=255
+
+# Right eye on SPI1 with different GPIOs
+dtoverlay=gc9a01-configurable,spi=1,dc_gpio=26,reset_gpio=6,led_gpio=255
+```
+This creates `/dev/fb0` for the left eye and `/dev/fb1` for the right eye.
+
+### Example 2: Different GPIO pins with backlight disabled
 ```
 dtoverlay=gc9a01-configurable,dc_gpio=23,reset_gpio=24,led_gpio=255
 ```
 
-### Example 2: Custom pins with 60 FPS and 90-degree rotation
+### Example 3: Custom pins with 60 FPS and 90-degree rotation
 ```
 dtoverlay=gc9a01-configurable,dc_gpio=22,reset_gpio=27,led_gpio=17,fps=60,rotate=90
 ```
 
-### Example 3: Higher SPI speed on different pins
+### Example 4: Higher SPI speed on SPI1
 ```
-dtoverlay=gc9a01-configurable,dc_gpio=24,reset_gpio=25,led_gpio=12,speed=80000000
+dtoverlay=gc9a01-configurable,spi=1,dc_gpio=24,reset_gpio=25,led_gpio=12,speed=80000000
 ```
 
 ## Notes

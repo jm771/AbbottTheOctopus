@@ -11,6 +11,7 @@
 / {
     compatible = "brcm,bcm2835";
 
+    /* Fragment to disable spidev on SPI0 */
     fragment@0 {
         target = <&spidev0>;
         __overlay__ {
@@ -18,7 +19,15 @@
         };
     };
 
-    fragment@1 {
+    /* Fragment to disable spidev on SPI1 (dormant by default) */
+    fragment_spi1_disable: fragment@1 {
+        target = <&spidev1>;
+        __dormant__ {
+            status = "disabled";
+        };
+    };
+
+    fragment@2 {
         target = <&gpio>;
         __overlay__ {
             gc9a01_pins: gc9a01_pins {
@@ -29,8 +38,9 @@
         };
     };
 
-    fragment@2 {
-        target = <&spi0>;
+    /* Fragment for SPI target - defaults to SPI0, can be switched to SPI1 */
+    frag3: fragment@3 {
+        target-path = "/soc/spi@7e204000";  /* SPI0 by default */
         __overlay__ {
             /* needed to avoid dtc warning */
             #address-cells = <1>;
@@ -115,7 +125,7 @@
     };
 
     /* Fragment to disable LED GPIO if led_gpio is set to 255 */
-    fragment_led_disable: fragment@3 {
+    fragment_led_disable: fragment@5 {
         target = <&gc9a01>;
         __dormant__ {
             led-gpios = <>;
@@ -123,6 +133,11 @@
     };
 
     __overrides__ {
+        /* SPI interface selection (0=SPI0, 1=SPI1) */
+        spi =           <0>,"-0+1";      /* If spi=1: disable fragment@0 (spidev0), enable fragment@1 (spidev1) */
+        spi1 =          <&frag3>,"target-path=/soc/spi@7e215080";  /* Point fragment@3 to SPI1 */
+
+        /* Display parameters */
         speed =         <&gc9a01>,"spi-max-frequency:0";
         rotate =        <&gc9a01>,"rotate:0";
         width =         <&gc9a01>,"width:0";
@@ -136,7 +151,7 @@
         reset_gpio =    <&gc9a01>,"reset-gpios:4",
                         <&gc9a01_pins>,"brcm,pins:4";
         led_gpio =      <&gc9a01>,"led-gpios:4",
-                        <0>,"=3";  /* Enable fragment@3 if led_gpio=255 */
+                        <0>,"=5";  /* Enable fragment@5 if led_gpio=255 */
 
         /* Polarity overrides (0=active high, 1=active low) */
         dc_polarity =   <&gc9a01>,"dc-gpios:8";
