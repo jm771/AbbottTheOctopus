@@ -154,7 +154,7 @@ class ReactionStateManager():
         if current_frame == self._last_frame:
             return
         if current_frame > self._last_frame + 1:
-            print("Missed a frame - does an animation have lots of compute?")
+            print(f"Missed a frame rendering {current_frame}, last frame was {self._last_frame} does animation have lots of compute?")
         
         for manager in self._sub_managers:
             manager.play_animation_frame(current_frame)
