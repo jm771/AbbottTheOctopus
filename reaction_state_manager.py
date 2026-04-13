@@ -19,7 +19,7 @@ class ReactionType:
     Excited = "Excited"
     Love = "Love"
 
-class ReactionSubManager(ABCMeta):
+class ReactionSubManager(metaclass=ABCMeta):
     @abstractmethod
     def idle(self,):
         pass
