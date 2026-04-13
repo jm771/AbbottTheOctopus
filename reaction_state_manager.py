@@ -110,7 +110,7 @@ class ArmsReactionManager(ReactionSubManager):
 
     def play_animation_frame(self, frame: int):
         # Idle if we go past the end of the animation:
-        if self.active_animation.length is None or frame < self.active_animation.length():
+        if self.active_animation.length() is None or frame < self.active_animation.length():
             self.active_animation.display_frame(self._left_arm, self._right_arm, frame)
         else:
             self.idle()
