@@ -221,9 +221,17 @@
         };
     };
 
-    /* Fragment to disable LED GPIO if led_gpio is set to 255 */
+    /* Fragment to disable LED GPIO for SPI0 if led_gpio is set to 255 */
     fragment@6 {
         target = <&gc9a01>;
+        __dormant__ {
+            led-gpios = <>;
+        };
+    };
+
+    /* Fragment to disable LED GPIO for SPI1 if led_gpio is set to 255 */
+    fragment@7 {
+        target = <&gc9a01_spi1>;
         __dormant__ {
             led-gpios = <>;
         };
@@ -260,7 +268,8 @@
                         <&gc9a01_pins_spi1>,"brcm,pins:4";
         led_gpio =      <&gc9a01>,"led-gpios:4",
                         <&gc9a01_spi1>,"led-gpios:4",
-                        <0>,"=6";  /* Enable fragment@6 if led_gpio=255 */
+                        <0>,"=6",  /* Enable fragment@6 (SPI0) if led_gpio=255 */
+                        <0>,"=7";  /* Enable fragment@7 (SPI1) if led_gpio=255 */
 
         /* Polarity overrides (0=active high, 1=active low) */
         dc_polarity =   <&gc9a01>,"dc-gpios:8",
