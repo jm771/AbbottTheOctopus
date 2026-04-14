@@ -40,22 +40,23 @@ class FramebufferDisplay:
                                   mmap.MAP_SHARED,
                                   mmap.PROT_READ | mmap.PROT_WRITE)
 
-    def image(self, img):
+    def image(self, img, offset_x=0, offset_y=0):
         """
         Display a PIL Image on the framebuffer.
-        Converts to RGB565 format and writes directly to framebuffer.
+        Only updates the pixels covered by the image at the given offset.
 
         Args:
-            img: PIL Image object (will be resized if needed)
+            img: PIL Image object (any size)
+            offset_x: X offset in pixels (default: 0)
+            offset_y: Y offset in pixels (default: 0)
         """
         s1 = datetime.now()
-        # Resize if necessary
-        # if img.size != (self.width, self.height):
-        #     img = img.resize((self.width, self.height), Image.LANCZOS)
 
         # Convert to RGB if not already
         if img.mode != 'RGB':
             img = img.convert('RGB')
+
+        img_width, img_height = img.size
 
         # Convert PIL Image to numpy array (height x width x 3)
         rgb_array = np.array(img, dtype=np.uint8)
@@ -66,19 +67,43 @@ class FramebufferDisplay:
         b = rgb_array[:, :, 2].astype(np.uint16)
 
         # Convert to RGB565 using vectorized operations
-        rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
+        img_rgb565 = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
-        # Convert to little-endian bytes
-        fb_data = rgb565.astype('<u2').tobytes()
+        # Calculate bounds (clip to display size)
+        x_start = max(0, offset_x)
+        y_start = max(0, offset_y)
+        x_end = min(offset_x + img_width, self.width)
+        y_end = min(offset_y + img_height, self.height)
+
+        # Check if image is within bounds
+        if x_start >= self.width or y_start >= self.height or x_end <= 0 or y_end <= 0:
+            return  # Image is completely out of bounds
+
+        # Calculate source region from image (handle negative offsets)
+        src_x_start = max(0, -offset_x)
+        src_y_start = max(0, -offset_y)
+        src_x_end = src_x_start + (x_end - x_start)
+        src_y_end = src_y_start + (y_end - y_start)
+
+        # Extract the region to write
+        region_rgb565 = img_rgb565[src_y_start:src_y_end, src_x_start:src_x_end]
+
+        # Write each row to the framebuffer at the correct position
+        bytes_per_pixel = 2
+        row_bytes = (x_end - x_start) * bytes_per_pixel
+
+        for row_idx, fb_y in enumerate(range(y_start, y_end)):
+            # Calculate framebuffer offset for this row
+            fb_offset = (fb_y * self.width + x_start) * bytes_per_pixel
+
+            # Convert row to bytes
+            row_data = region_rgb565[row_idx].astype('<u2').tobytes()
+
+            # Write this row to framebuffer
+            self.fb_mmap.seek(fb_offset)
+            self.fb_mmap.write(row_data)
 
         # print(f"logic took {datetime.now() - s1}")
-
-        s = datetime.now()
-        # Write to framebuffer
-        self.fb_mmap.seek(0)
-
-        self.fb_mmap.write(fb_data)
-        # print(f"write took {datetime.now() - s}")
 
     def fill(self, color=0):
         """
