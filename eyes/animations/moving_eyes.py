@@ -31,8 +31,8 @@ class IdleEyesAnimation(EyeAnimation):
         if self.sustain == 0:
             self.targetX = random.randint(-50, 50)
             self.targetY = random.randint(-50, 50)
-            self.speed = random.randint(1, 10)
-            self.sustain = random.randint(2, 20)
+            self.speed = random.randint(1, 5)
+            self.sustain = random.randint(4, 40)
 
         # Orignal animation written for 10hz
         frames_passed = frame_number - self.lastFrame
