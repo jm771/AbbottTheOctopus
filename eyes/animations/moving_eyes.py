@@ -59,5 +59,5 @@ class IdleEyesAnimation(EyeAnimation):
         right_eye.image(im)
         t3 = datetime.now()
 
-        print(f"display times {t3 - t2} {t2 - t1}")
+        #print(f"display times {t3 - t2} {t2 - t1}")
   
