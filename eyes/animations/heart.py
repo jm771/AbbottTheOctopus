@@ -13,8 +13,8 @@ def centralize_image(image, offsety=10):
     # looks better a little lower
     center_y = DISPLAY_HEIGHT // 2 + offsety
 
-    x = center_x - im.width // 2
-    y = center_y - im.height // 2
+    x = center_x - image.width // 2
+    y = center_y - image.height // 2
     return image.rotate(0, translate=[x, y], fillcolor=0xffffff) 
 
 class HeartAnimation(EyeAnimation):
