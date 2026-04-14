@@ -8,7 +8,7 @@ from arms.big_wave_animation import BigWaveAnimation
 from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
 from eyes.animations.animation import EyeAnimation
-from eyes.eye_controllers import make_left_eye_display, make_right_eye_display
+from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_display
 from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
 from eyes.animations.heart import HeartAnimation
