@@ -153,12 +153,13 @@ class ReactionStateManager():
             manager.idle()
 
     def _start_next_animation(self):
-        self._current_animation_length = max(m.length() for m in self._sub_managers)
+        new_reaction = self._queued_reactions[0]
+        self._current_animation_length = max(m.get_animation_length(new_reaction) for m in self._sub_managers)
         self._animation_start_time = datetime.now()
         self._last_frame = -1
 
         for manager in self._sub_managers():
-            manager.start_animation(self._queued_reactions[0])
+            manager.start_animation(new_reaction)
 
     def _get_current_frame(self):
         return math.floor(td_to_micros(datetime.now() - self._animation_start_time) // self._MICROS_PER_FRAME)
