@@ -9,9 +9,10 @@ class BigWaveAnimation(ArmAnimation):
         pass
 
     def length(self) -> Optional[int]:
-        return 120
+        return 480
 
     def display_frame(self, left_arm: ArmController, right_arm: ArmController, frame_number: int):
+        frame_number //= 2
         N_WAVES = 2
         WAVE_CYCLE_LENGTH = self.length() // N_WAVES
         HALF_CYCLE_LENGTH = WAVE_CYCLE_LENGTH // 2
