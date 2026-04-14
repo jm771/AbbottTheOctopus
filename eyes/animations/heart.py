@@ -8,12 +8,21 @@ from PIL import Image
 
 WHITE = color565(0xff, 0xff, 0xff)
 
+def centralize_image(image, offsety=10):
+    center_x = DISPLAY_WIDTH // 2
+    # looks better a little lower
+    center_y = DISPLAY_HEIGHT // 2 + offsety
+
+    x = center_x - im.width // 2
+    y = center_y - im.height // 2
+    return image.rotate(0, translate=[x, y], fillcolor=0xffffff) 
+
 class HeartAnimation(EyeAnimation):
     def __init__(self):
         baseImage = scale_image(Image.open("eyes/heart.png"), DISPLAY_WIDTH, DISPLAY_HEIGHT)
-        halfSize = scale_image(baseImage, baseImage.width//2, baseImage.height//2)
-        thirdSize = scale_image(baseImage, baseImage.width//3, baseImage.height//3)
-        twoThirdSize = scale_image(baseImage, baseImage.width * 2 // 3, baseImage.height * 2//3)
+        halfSize = centralize_image(scale_image(baseImage, baseImage.width//2, baseImage.height//2))
+        thirdSize = centralize_image(scale_image(baseImage, baseImage.width//3, baseImage.height//3))
+        twoThirdSize = centralize_image(scale_image(baseImage, baseImage.width * 2 // 3, baseImage.height * 2//3))
         self.images = [thirdSize, halfSize, twoThirdSize]
 
     def reset(self):
@@ -30,13 +39,8 @@ class HeartAnimation(EyeAnimation):
 
         idx = (frame_number // 30) % 3
         im = self.images[idx]
-        center_x = DISPLAY_WIDTH // 2
-        # looks better a little lower
-        center_y = DISPLAY_HEIGHT // 2 + 10
 
-        x = center_x - im.width // 2
-        y = center_y - im.height // 2
 
-        left_eye.image(im, x=x, y=y)
-        right_eye.image(im, x=x, y=y)
+        left_eye.image(im)
+        right_eye.image(im)
   
