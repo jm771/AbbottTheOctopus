@@ -71,14 +71,14 @@ class FramebufferDisplay:
         # Convert to little-endian bytes
         fb_data = rgb565.astype('<u2').tobytes()
 
-        print(f"logic took {datetime.now() - s1}")
+        # print(f"logic took {datetime.now() - s1}")
 
         s = datetime.now()
         # Write to framebuffer
         self.fb_mmap.seek(0)
 
         self.fb_mmap.write(fb_data)
-        print(f"write took {datetime.now() - s}")
+        # print(f"write took {datetime.now() - s}")
 
     def fill(self, color=0):
         """
