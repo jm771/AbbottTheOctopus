@@ -37,6 +37,6 @@ class HeartAnimation(EyeAnimation):
         x = center_x - im.width // 2
         y = center_y - im.height // 2
 
-        left_eye.image(im, x=x, y=y)
-        right_eye.image(im, x=x, y=y)
+        left_eye.image(im, offset_x=x, offset_y=y)
+        right_eye.image(im, offset_x=x, offset_y=y)
   
