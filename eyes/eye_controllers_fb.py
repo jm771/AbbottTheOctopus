@@ -50,8 +50,8 @@ class FramebufferDisplay:
         """
         s1 = datetime.now()
         # Resize if necessary
-        if img.size != (self.width, self.height):
-            img = img.resize((self.width, self.height), Image.LANCZOS)
+        # if img.size != (self.width, self.height):
+        #     img = img.resize((self.width, self.height), Image.LANCZOS)
 
         # Convert to RGB if not already
         if img.mode != 'RGB':
