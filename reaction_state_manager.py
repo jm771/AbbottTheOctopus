@@ -148,6 +148,7 @@ class ReactionStateManager():
     def _idle(self):
         self._is_idle = True
         self._last_frame = -1
+        self._animation_start_time = datetime.now()
 
         for manager in self._sub_managers:
             manager.idle()
