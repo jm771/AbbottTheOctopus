@@ -18,7 +18,7 @@ class RaiseArmsAnimation(ArmAnimation):
 
         # Raise hand for first 30 frames
         if frame_number <= RAISE_FRAMES:
-            pos = (PUMP_BOTTOM - START_POS) * frame_number / RAISE_FRAMES
+            pos = START_POS + (PUMP_BOTTOM - START_POS) * frame_number / RAISE_FRAMES
 
         # then do three little pumps
         else:
