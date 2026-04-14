@@ -20,9 +20,9 @@ def centralize_image(image, offsety=10):
 class HeartAnimation(EyeAnimation):
     def __init__(self):
         baseImage = scale_image(Image.open("eyes/heart.png"), DISPLAY_WIDTH, DISPLAY_HEIGHT)
-        halfSize = centralize_image(scale_image(baseImage, baseImage.width//2, baseImage.height//2))
-        thirdSize = centralize_image(scale_image(baseImage, baseImage.width//3, baseImage.height//3))
-        twoThirdSize = centralize_image(scale_image(baseImage, baseImage.width * 2 // 3, baseImage.height * 2//3))
+        halfSize = scale_image(baseImage, baseImage.width//2, baseImage.height//2)
+        thirdSize = scale_image(baseImage, baseImage.width//3, baseImage.height//3)
+        twoThirdSize = scale_image(baseImage, baseImage.width * 2 // 3, baseImage.height * 2//3)
         self.images = [thirdSize, halfSize, twoThirdSize]
 
     def reset(self):
