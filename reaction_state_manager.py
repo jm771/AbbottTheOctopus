@@ -157,6 +157,7 @@ class ReactionStateManager():
         self._current_animation_length = max(m.get_animation_length(new_reaction) for m in self._sub_managers)
         self._animation_start_time = datetime.now()
         self._last_frame = -1
+        self._is_idle = False
 
         for manager in self._sub_managers:
             manager.start_animation(new_reaction)
