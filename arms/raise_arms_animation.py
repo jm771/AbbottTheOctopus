@@ -8,9 +8,10 @@ class RaiseArmsAnimation(ArmAnimation):
         pass
 
     def length(self) -> Optional[int]:
-        return 90
+        return 180
 
     def display_frame(self, left_arm: ArmController, right_arm: ArmController, frame_number: int):
+        frame_number = frame_number // 2
         START_POS = 0.5
         PUMP_BOTTOM = 0.75
         RAISE_FRAMES = 30
