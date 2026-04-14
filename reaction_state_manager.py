@@ -192,7 +192,7 @@ class ReactionStateManager():
         else:
             if self._get_current_frame() >= self._current_animation_length:
                 self._queued_reactions = self._queued_reactions[1:]
-                if len(self._queued_reactions == 0):
+                if len(self._queued_reactions) == 0:
                     self._idle()
                 else:
                     self._start_next_animation()
