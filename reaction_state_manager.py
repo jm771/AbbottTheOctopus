@@ -158,7 +158,7 @@ class ReactionStateManager():
         self._animation_start_time = datetime.now()
         self._last_frame = -1
 
-        for manager in self._sub_managers():
+        for manager in self._sub_managers:
             manager.start_animation(new_reaction)
 
     def _get_current_frame(self):
