@@ -7,6 +7,7 @@ from arms.arm_controler import make_arm_controllers
 from arms.big_wave_animation import BigWaveAnimation
 from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
+from arms.shocked_arms_animation import ShockedArmsAnimation
 from eyes.animations.animation import EyeAnimation
 from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_display
 from eyes.animations.excited import ExcitedAnimation
@@ -34,7 +35,7 @@ ZOOM_EMOJI_TO_REACTION_TYPE = {
     "Tada": ReactionType.Excited,
     "Heart": ReactionType.Love,
     "Clap": ReactionType.Excited,
-    "Open Mouth": ReactionType.Excited,
+    "Open Mouth": ReactionType.Shocked,
     # These particularly might like something better
     "Thumbs up": ReactionType.Excited,
     "Joy": ReactionType.Excited, # This is the crylaugh emoji
@@ -75,6 +76,7 @@ class EyesReactionManager(ReactionSubManager):
         self.idle_animation = IdleEyesAnimation()
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
+            ReactionType.Shocked: ExcitedAnimation(),
             ReactionType.Love: HeartAnimation()
         }
         self.active_animation: EyeAnimation = self.idle_animation
@@ -122,6 +124,7 @@ class ArmsReactionManager(ReactionSubManager):
         self.idle_animation = IdleArmAnimation()
         self.animations: dict[ReactionType, ArmAnimation] = {
             ReactionType.Excited: BigWaveAnimation(),
+            ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation()
         }
         self.active_animation: ArmAnimation = self.idle_animation
