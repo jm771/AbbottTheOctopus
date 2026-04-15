@@ -12,6 +12,7 @@ import json
 from queue import Empty, Queue
 
 from reaction_state_manager import (
+    ZOOM_EMOJI_TO_REACTION_TYPE,
     ReactionStateManager,
     make_arms_reaction_manager,
     make_eyes_reaction_manager,
@@ -25,7 +26,7 @@ app = Flask(__name__)
 
 
 def add_reaction_to_queue(emoji_name: str):
-    pass
+    q.put_nowait(emoji_name)
 
 
 @app.route("/reaction", methods=["POST"])
@@ -43,6 +44,8 @@ def receive_reaction():
         print(f"{'='*80}\n")
 
         # Return success response
+        add_reaction_to_queue(data["type"])
+
         return (
             jsonify(
                 {
@@ -54,8 +57,6 @@ def receive_reaction():
             200,
         )
 
-        # TODO
-        # add_reaction_to_queue(data["emoji"])
 
     except Exception as e:
         print(f"ERROR: {str(e)}")
@@ -98,8 +99,12 @@ if __name__ == "__main__":
     while True:
         try:
             while True:
-                reaction = q.get_nowait()
-                ReactionManager.queue_reaction(reaction)
+                emoji = q.get_nowait()
+                try:
+                    reaction = ZOOM_EMOJI_TO_REACTION_TYPE[emoji]
+                    ReactionManager.queue_reaction(reaction)
+                except KeyError:
+                    pass
         except Empty:
             pass
 
