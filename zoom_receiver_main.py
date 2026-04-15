@@ -64,7 +64,7 @@ def health_check():
     }), 200
 
 def run_flask():
-    app.run(host='0.0.0.0', threaded=True, port=5000, debug=True)
+    app.run(host='0.0.0.0', threaded=True, port=5000, debug=False)
 
 
 if __name__ == '__main__':
