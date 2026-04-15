@@ -1,7 +1,7 @@
 
 from typing import Optional
 from eyes.animations.animation import EyeAnimation
-from eyes.animations.eye_image import load_and_scale_eye_image, scale_image
+from eyes.animations.eye_image import scale_image
 from adafruit_rgb_display import color565
 from eyes.display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 from PIL import Image

@@ -13,11 +13,11 @@ class WinkyAnimation(EyeAnimation):
         pass
 
     def length(self) -> Optional[int]:
-        return 90
+        return 180
 
     def display_frame(self, left_eye, right_eye, frame_number):
         # Start with normal eyes, then wink with the right eye.
-        wink_after_frame = 12
+        wink_after_frame = 60
 
         left_eye.image(self.normal_eye)
         if frame_number < wink_after_frame:
