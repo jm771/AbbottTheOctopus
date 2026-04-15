@@ -1,4 +1,3 @@
-
 from typing import Optional
 from eyes.animations.animation import EyeAnimation
 from eyes.animations.eye_image import scale_image
@@ -6,14 +5,19 @@ from adafruit_rgb_display import color565
 from eyes.display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 from PIL import Image
 
-WHITE = color565(0xff, 0xff, 0xff)
+WHITE = color565(0xFF, 0xFF, 0xFF)
+
 
 class HeartAnimation(EyeAnimation):
     def __init__(self):
-        baseImage = scale_image(Image.open("eyes/heart.png"), DISPLAY_WIDTH, DISPLAY_HEIGHT)
-        halfSize = scale_image(baseImage, baseImage.width//2, baseImage.height//2)
-        thirdSize = scale_image(baseImage, baseImage.width//3, baseImage.height//3)
-        twoThirdSize = scale_image(baseImage, baseImage.width * 2 // 3, baseImage.height * 2//3)
+        baseImage = scale_image(
+            Image.open("eyes/heart.png"), DISPLAY_WIDTH, DISPLAY_HEIGHT
+        )
+        halfSize = scale_image(baseImage, baseImage.width // 2, baseImage.height // 2)
+        thirdSize = scale_image(baseImage, baseImage.width // 3, baseImage.height // 3)
+        twoThirdSize = scale_image(
+            baseImage, baseImage.width * 2 // 3, baseImage.height * 2 // 3
+        )
         self.images = [thirdSize, halfSize, twoThirdSize]
 
     def reset(self):
@@ -24,7 +28,7 @@ class HeartAnimation(EyeAnimation):
         return 90
 
     def display_frame(self, left_eye, right_eye, frame_number):
-        if (frame_number == 0):
+        if frame_number == 0:
             left_eye.fill(WHITE)
             right_eye.fill(WHITE)
 
@@ -39,4 +43,3 @@ class HeartAnimation(EyeAnimation):
 
         left_eye.image(im, offset_x=x, offset_y=y)
         right_eye.image(im, offset_x=x, offset_y=y)
-  

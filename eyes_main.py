@@ -15,26 +15,32 @@ idle_animation = IdleEyesAnimation()
 excited_animation = ExcitedAnimation()
 heart_animation = HeartAnimation()
 
+
 def play_animation(animation):
-    assert animation.length() is not None, f"animation has no length - can't be played one time"
-    for i in range (0, animation.length()):
+    assert (
+        animation.length() is not None
+    ), f"animation has no length - can't be played one time"
+    for i in range(0, animation.length()):
         animation.display_frame(left_display, right_display, i)
         sleep(0.1)
     animation.reset()
 
+
 def select_animation(character):
-    if character == 'e':
+    if character == "e":
         return excited_animation
-    if character == 'h':
+    if character == "h":
         return heart_animation
 
     return None
+
 
 def readline_nonblocking():
     if select.select([sys.stdin], [], [], 0)[0]:
         return sys.stdin.readline().rstrip()
 
     return None
+
 
 i = 0
 while True:
@@ -46,5 +52,5 @@ while True:
         play_animation(animation)
 
     idle_animation.display_frame(left_display, right_display, i)
-    i+=1
+    i += 1
     sleep(0.1)

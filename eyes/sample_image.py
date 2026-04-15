@@ -1,4 +1,3 @@
-
 import time
 from eyes.eye_controllers import make_left_eye_display, make_right_eye_display
 from adafruit_rgb_display import color565
@@ -24,5 +23,3 @@ while True:
     display2.pixel(120, 160, color565(255, 0, 0))
     # Pause 2 seconds.
     time.sleep(2)
-
-

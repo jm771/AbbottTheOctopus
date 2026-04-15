@@ -11,16 +11,24 @@ from datetime import datetime
 import json
 from queue import Empty, Queue
 
-from reaction_state_manager import ReactionStateManager, make_arms_reaction_manager, make_eyes_reaction_manager
+from reaction_state_manager import (
+    ReactionStateManager,
+    make_arms_reaction_manager,
+    make_eyes_reaction_manager,
+)
 
 q = Queue()
-ReactionManager = ReactionStateManager([make_eyes_reaction_manager(), make_arms_reaction_manager()])
+ReactionManager = ReactionStateManager(
+    [make_eyes_reaction_manager(), make_arms_reaction_manager()]
+)
 app = Flask(__name__)
+
 
 def add_reaction_to_queue(emoji_name: str):
     pass
 
-@app.route('/reaction', methods=['POST'])
+
+@app.route("/reaction", methods=["POST"])
 def receive_reaction():
     try:
         # Get the JSON data from the request
@@ -35,46 +43,54 @@ def receive_reaction():
         print(f"{'='*80}\n")
 
         # Return success response
-        return jsonify({
-            'status': 'success',
-            'message': 'Reaction received',
-            'timestamp': timestamp
-        }), 200
-    
+        return (
+            jsonify(
+                {
+                    "status": "success",
+                    "message": "Reaction received",
+                    "timestamp": timestamp,
+                }
+            ),
+            200,
+        )
+
         # TODO
-        #add_reaction_to_queue(data["emoji"])
+        # add_reaction_to_queue(data["emoji"])
 
     except Exception as e:
         print(f"ERROR: {str(e)}")
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 
-@app.route('/health', methods=['GET'])
+@app.route("/health", methods=["GET"])
 def health_check():
     """
     Health check endpoint.
     """
-    return jsonify({
-        'status': 'healthy',
-        'service': 'reaction-receiver',
-        'timestamp': datetime.now().isoformat()
-    }), 200
+    return (
+        jsonify(
+            {
+                "status": "healthy",
+                "service": "reaction-receiver",
+                "timestamp": datetime.now().isoformat(),
+            }
+        ),
+        200,
+    )
+
 
 def run_flask():
-    app.run(host='0.0.0.0', threaded=True, port=5000, debug=False)
+    app.run(host="0.0.0.0", threaded=True, port=5000, debug=False)
 
 
-if __name__ == '__main__':
-    print("\n" + "="*80)
+if __name__ == "__main__":
+    print("\n" + "=" * 80)
     print("Starting Reaction Receiver Service")
-    print("="*80)
+    print("=" * 80)
     print("Listening on: http://localhost:5000")
     print("Endpoint: POST http://localhost:5000/reaction")
     print("Health check: GET http://localhost:5000/health")
-    print("="*80 + "\n")
+    print("=" * 80 + "\n")
 
     t = threading.Thread(target=run_flask, daemon=True)
     t.start()
