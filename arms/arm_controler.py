@@ -1,8 +1,3 @@
-from adafruit_pca9685 import PCA9685
-from time import sleep
-import board
-import busio
-
 # From testing - this is the range in which the servo actually moves
 MIN_DUTY = 0x600
 MAX_DUTY = 0x2800
@@ -25,11 +20,24 @@ class ArmController:
             self._channel.duty_cycle = MIN_DUTY + duty_int
 
 
-def make_arm_controllers():
-    i2c = board.I2C()
-    pca = PCA9685(i2c)
-    pca.frequency = 60
+class StubArmController:
+    def set_pos(self, pos: float):
+        pass
 
-    left_arm = ArmController(pca.channels[0], False)
-    right_arm = ArmController(pca.channels[1], True)
-    return [left_arm, right_arm]
+
+def make_arm_controllers():
+    try:
+        import board
+        import busio
+        from adafruit_pca9685 import PCA9685
+
+        i2c = board.I2C()
+        pca = PCA9685(i2c)
+        pca.frequency = 60
+        return [
+            ArmController(pca.channels[0], False),
+            ArmController(pca.channels[1], True),
+        ]
+    except NotImplementedError, ImportError:
+        print("No hardware detected, using stub arm controllers")
+        return [StubArmController(), StubArmController()]
