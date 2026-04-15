@@ -4,7 +4,7 @@ from eyes.animations.eye_image import load_and_scale_eye_image, scale_image
 from eyes.display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 from PIL import Image
 
-class ThumbsUpAnimation(EyeAnimation):
+class WinkyAnimation(EyeAnimation):
     def __init__(self):
         self.normal_eye = load_and_scale_eye_image(DISPLAY_WIDTH, DISPLAY_HEIGHT)
         self.wink_eye = scale_image(Image.open("eyes/wink.png"), DISPLAY_WIDTH, DISPLAY_HEIGHT)
