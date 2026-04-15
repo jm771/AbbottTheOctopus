@@ -13,6 +13,8 @@ def select_reaction(character):
         return ReactionType.Love
     if character == 's':
         return ReactionType.Shocked
+    if character == 't':
+        return ReactionType.ThumbsUp
 
     return None
 
