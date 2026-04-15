@@ -138,27 +138,29 @@ class FramebufferDisplay:
         self.close()
 
 
+class StubDisplay:
+    """No-op display for running without hardware."""
+    def image(self, img, offset_x=0, offset_y=0):
+        pass
+
+    def fill(self, color=0):
+        pass
+
+    def close(self):
+        pass
+
+
 def make_left_eye_display(fb_device='/dev/fb2'):
-    """
-    Create a framebuffer display for the left eye.
-
-    Args:
-        fb_device: Path to framebuffer device (default: '/dev/fb0')
-
-    Returns:
-        FramebufferDisplay instance
-    """
-    return FramebufferDisplay(fb_device, width=240, height=240)
+    try:
+        return FramebufferDisplay(fb_device, width=240, height=240)
+    except (FileNotFoundError, OSError):
+        print(f"No framebuffer at {fb_device}, using stub left eye display")
+        return StubDisplay()
 
 
 def make_right_eye_display(fb_device='/dev/fb1'):
-    """
-    Create a framebuffer display for the right eye.
-
-    Args:
-        fb_device: Path to framebuffer device (default: '/dev/fb1')
-
-    Returns:
-        FramebufferDisplay instance
-    """
-    return FramebufferDisplay(fb_device, width=240, height=240)
+    try:
+        return FramebufferDisplay(fb_device, width=240, height=240)
+    except (FileNotFoundError, OSError):
+        print(f"No framebuffer at {fb_device}, using stub right eye display")
+        return StubDisplay()
