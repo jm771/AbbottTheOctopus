@@ -82,7 +82,7 @@ class EyesReactionManager(ReactionSubManager):
             ReactionType.Excited: ExcitedAnimation(),
             ReactionType.Shocked: ExcitedAnimation(),
             ReactionType.Love: HeartAnimation(),
-            ReactionType.ThumbsUp: WinkyAnimation()
+            ReactionType.ThumbsUp: WinkyAnimation(),
         }
 
         self._default_animation = self.animations[ReactionType.Excited]
@@ -135,8 +135,8 @@ class ArmsReactionManager(ReactionSubManager):
         self.animations: dict[ReactionType, ArmAnimation] = {
             ReactionType.Excited: BigWaveAnimation(),
             ReactionType.Shocked: ShockedArmsAnimation(),
-            ReactionType.Love: RaiseArmsAnimation()
-            ReactionType.ThumbsUp: ThumbsUpAnimation()
+            ReactionType.Love: RaiseArmsAnimation(),
+            ReactionType.ThumbsUp: ThumbsUpAnimation(),
         }
         self.active_animation: ArmAnimation = self.idle_animation
         self._default_animation = self.animations[ReactionType.Excited]
