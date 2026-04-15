@@ -27,7 +27,7 @@ MAX_OCTOPUS_REACH = 0x2000
 
 duty = MIN_DUTY 
 while True:
-    print(f"{duty:x}")
+    # print(f"{duty:x}")
     pca.channels[0].duty_cycle = duty
     pca.channels[1].duty_cycle = duty
     sleep(0.05)

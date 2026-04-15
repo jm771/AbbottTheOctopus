@@ -6,7 +6,7 @@ services:
     command: ["npm", "run", "start:dev"]
     platform: linux/amd64
     ports:
-      - "127.0.0.1:3000:3000"
+      - "0.0.0.0:3000:3000"
       - "127.0.0.1:9229:9229"
     env_file:
       - ${ENV_FILE:-.env}
