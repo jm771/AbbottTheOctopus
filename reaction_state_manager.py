@@ -94,13 +94,13 @@ class EyesReactionManager(ReactionSubManager):
 
 
     def get_animation_length(self, reactionType) -> int:
-        len = self.animations[reactionType].length()
+        len = self._get_animation(reactionType).length()
         assert len is not None, "Set up an infinite animation in the reactions interface"
         return len
     
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
-        self.active_animation = self.animations.get(reactionType, self._default_animation)
+        self.active_animation = self._get_animation(reactionType)
 
 
     def play_animation_frame(self, frame: int):
@@ -140,15 +140,17 @@ class ArmsReactionManager(ReactionSubManager):
         self.active_animation.reset()
         self.active_animation = self.idle_animation
 
+    def _get_animation(self, reactionType: ReactionType):
+        return self.animations.get(reactionType, self._default_animation)
 
     def get_animation_length(self, reactionType) -> int:
-        len = self.animations[reactionType].length()
+        len = self._get_animation(reactionType).length()
         assert len is not None, "Set up an infinite animation in the reactions interface"
         return len
     
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
-        self.active_animation = self.animations[reactionType]
+        self.active_animation = self._get_animation(reactionType)
 
 
     def play_animation_frame(self, frame: int):
