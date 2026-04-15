@@ -37,15 +37,15 @@ class ReactionType:
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
     # These are the default zoom emojis which would be good to fill out all of (with unique animations)
-    "balloon": ReactionType.Love,
-    "rocket": ReactionType.Excited,
+    "balloon": ReactionType.ThumbsUp,
+    "rocket": ReactionType.Shocked,
     "tada": ReactionType.Excited,
     "heart": ReactionType.Love,
-    "clap": ReactionType.Excited,
-    "open mouth": ReactionType.Shocked,
-    # These particularly might like something better
-    "thumbs up": ReactionType.ThumbsUp,
-    "joy": ReactionType.Excited,  # This is the crylaugh emoji
+    "clap": ReactionType.Love,
+    "openmouth": ReactionType.Shocked,
+    "thumbsup": ReactionType.ThumbsUp,
+    # Would love to get a new one for this - this is "crylaugh"
+    "joy": ReactionType.Excited,  
     # Extra Emojis
 }
 
