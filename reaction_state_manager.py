@@ -9,6 +9,7 @@ from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
 from arms.thumbs_up_animation import ThumbsUpAnimation
 from eyes.animations.animation import EyeAnimation
+from eyes.animations.thumbs_up import WinkyAnimation
 from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_display
 from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
@@ -79,7 +80,7 @@ class EyesReactionManager(ReactionSubManager):
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
             ReactionType.Love: HeartAnimation(),
-            ReactionType.ThumbsUp: ThumbsUpAnimation()
+            ReactionType.ThumbsUp: WinkyAnimation()
         }
 
         self._default_animation = self.animations[ReactionType.Excited]
