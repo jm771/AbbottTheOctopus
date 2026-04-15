@@ -12,3 +12,21 @@ logs
 rtms/sdk/id_*
 
 rtms/sdk/Docker.local
+
+# Virtual environments
+.venv/
+
+# uv-specific files
+# .python-version is optional to track, but often ignored in libraries
+.python-version
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Cache directories
+.ruff_cache/
+.pytest_cache/
+__pycache__/
+
