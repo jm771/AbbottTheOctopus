@@ -88,6 +88,9 @@ class EyesReactionManager(ReactionSubManager):
     @property
     def name(self):
         return "eyes"
+    
+    def _get_animation(self, reactionType: ReactionType):
+        return self.animations.get(reactionType, self._default_animation)
 
     def idle(self):
         self.active_animation.reset()
@@ -185,9 +188,6 @@ class ReactionStateManager():
 
         for manager in self._sub_managers:
             manager.idle()
-    
-    def _get_animation(self, reactionType: ReactionType):
-        return self.animations.get(reactionType, self._default_animation)
 
     def _start_next_animation(self):
         new_reaction = self._queued_reactions[0]
