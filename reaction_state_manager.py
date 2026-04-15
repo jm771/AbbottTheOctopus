@@ -75,7 +75,7 @@ class EyesReactionManager(ReactionSubManager):
         self.idle_animation = IdleEyesAnimation()
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
-            ReactionType.Heart: HeartAnimation()
+            ReactionType.Love: HeartAnimation()
         }
         self.active_animation: EyeAnimation = self.idle_animation
     
@@ -122,7 +122,7 @@ class ArmsReactionManager(ReactionSubManager):
         self.idle_animation = IdleArmAnimation()
         self.animations: dict[ReactionType, ArmAnimation] = {
             ReactionType.Excited: BigWaveAnimation(),
-            ReactionType.Heart: RaiseArmsAnimation()
+            ReactionType.Love: RaiseArmsAnimation()
         }
         self.active_animation: ArmAnimation = self.idle_animation
 
