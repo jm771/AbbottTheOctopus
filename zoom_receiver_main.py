@@ -106,6 +106,7 @@ if __name__ == "__main__":
                     print(f"main got {reaction=}")
                     ReactionManager.queue_reaction(reaction)
                 except KeyError:
+                    print(f"{emoji=} not found")
                     pass
         except Empty:
             pass
