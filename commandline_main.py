@@ -11,6 +11,8 @@ def select_reaction(character):
         return ReactionType.Excited
     if character == 'h':
         return ReactionType.Love
+    if character == 's':
+        return ReactionType.Shocked
 
     return None
 
