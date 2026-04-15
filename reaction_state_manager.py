@@ -134,13 +134,9 @@ class ArmsReactionManager(ReactionSubManager):
         self.idle_animation = IdleArmAnimation()
         self.animations: dict[ReactionType, ArmAnimation] = {
             ReactionType.Excited: BigWaveAnimation(),
-<<<<<<< HEAD
             ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation()
-=======
-            ReactionType.Love: RaiseArmsAnimation(),
             ReactionType.ThumbsUp: ThumbsUpAnimation()
->>>>>>> main
         }
         self.active_animation: ArmAnimation = self.idle_animation
         self._default_animation = self.animations[ReactionType.Excited]
