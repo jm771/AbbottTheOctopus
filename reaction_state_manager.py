@@ -13,6 +13,7 @@ from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_displa
 from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
 from eyes.animations.heart import HeartAnimation
+from eyes.animations.brainrot import BrainrotAnimation
 
 
 #
@@ -86,7 +87,7 @@ class EyesReactionManager(ReactionSubManager):
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
             ReactionType.Love: HeartAnimation(),
-            ReactionType.OpenMouth: HeartAnimation(),
+            ReactionType.OpenMouth: BrainrotAnimation(),
         }
         self.active_animation: EyeAnimation = self.idle_animation
 
