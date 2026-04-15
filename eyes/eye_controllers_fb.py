@@ -150,7 +150,7 @@ class StubDisplay:
         pass
 
 
-def make_left_eye_display(fb_device='/dev/fb2'):
+def make_left_eye_display(fb_device='/dev/fb0'):
     try:
         return FramebufferDisplay(fb_device, width=240, height=240)
     except (FileNotFoundError, OSError):
