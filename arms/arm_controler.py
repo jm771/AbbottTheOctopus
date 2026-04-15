@@ -17,7 +17,7 @@ class ArmController:
     # 0 is bottomed out, 1 as high as possible
     def set_pos(self, pos: float):
         duty_int = round(pos * DUTY_RANGE)
-        print(f"{duty_int:x}")
+        #print(f"{duty_int:x}")
         if self._invert:
             self._channel.duty_cycle = MAX_DUTY - duty_int
         else:
