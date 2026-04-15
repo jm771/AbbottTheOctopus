@@ -10,7 +10,7 @@ def select_reaction(character):
     if character == 'e':
         return ReactionType.Excited
     if character == 'h':
-        return ReactionType.Love
+        return ReactionType.Heart
 
     return None
 

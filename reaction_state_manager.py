@@ -13,11 +13,34 @@ from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
 from eyes.animations.heart import HeartAnimation
 
+#
+class ZoomEmoji:
+    Balloon = "Balloon"
+    Rocket = "Rocket"
+    ThumbsUp = "Thumbs up"
 
+
+# Logically this shouldn't live here - but sematically it helps 
+# give meaning and context to ReactionType
 
 class ReactionType:
     Excited = "Excited"
     Love = "Love"
+
+ZOOM_EMOJI_TO_REACTION_TYPE = {
+    # These are the default zoom emojis which would be good to fill out all of (with unique animations)
+    "Balloon": ReactionType.Love,
+    "Rocket": ReactionType.Excited,
+    "Tada": ReactionType.Excited,
+    "Heart": ReactionType.Love,
+    "Clap": ReactionType.Excited,
+    "Open Mouth": ReactionType.Excited,
+    # These particularly might like something better
+    "Thumbs up": ReactionType.Excited,
+    "Joy": ReactionType.Excited, # This is the crylaugh emoji
+    # Extra Emojis
+}
+
 
 class ReactionSubManager(metaclass=ABCMeta):
     @property
@@ -52,7 +75,7 @@ class EyesReactionManager(ReactionSubManager):
         self.idle_animation = IdleEyesAnimation()
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
-            ReactionType.Love: HeartAnimation()
+            ReactionType.Heart: HeartAnimation()
         }
         self.active_animation: EyeAnimation = self.idle_animation
     
@@ -99,7 +122,7 @@ class ArmsReactionManager(ReactionSubManager):
         self.idle_animation = IdleArmAnimation()
         self.animations: dict[ReactionType, ArmAnimation] = {
             ReactionType.Excited: BigWaveAnimation(),
-            ReactionType.Love: RaiseArmsAnimation()
+            ReactionType.Heart: RaiseArmsAnimation()
         }
         self.active_animation: ArmAnimation = self.idle_animation
 
