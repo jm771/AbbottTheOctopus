@@ -165,7 +165,7 @@ def make_left_eye_display(fb_device="/dev/fb0"):
     """
     try:
         return FramebufferDisplay(fb_device, width=240, height=240)
-    except FileNotFoundError, OSError:
+    except (FileNotFoundError, OSError):
         print(f"No framebuffer at {fb_device}, using stub left eye display")
         return StubDisplay()
 
@@ -182,6 +182,6 @@ def make_right_eye_display(fb_device="/dev/fb1"):
     """
     try:
         return FramebufferDisplay(fb_device, width=240, height=240)
-    except FileNotFoundError, OSError:
+    except (FileNotFoundError, OSError):
         print(f"No framebuffer at {fb_device}, using stub right eye display")
         return StubDisplay()
