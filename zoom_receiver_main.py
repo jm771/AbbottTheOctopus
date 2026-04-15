@@ -3,17 +3,25 @@
 Minimal Flask web service to receive reaction events from Zoom App backend.
 """
 
+import threading
+from time import sleep
+
 from flask import Flask, request, jsonify
 from datetime import datetime
 import json
+from queue import Empty, Queue
 
+from reaction_state_manager import ReactionStateManager, make_arms_reaction_manager, make_eyes_reaction_manager
+
+q = Queue()
+ReactionManager = ReactionStateManager([make_eyes_reaction_manager(), make_arms_reaction_manager()])
 app = Flask(__name__)
+
+def add_reaction_to_queue(emoji_name: str):
+    pass
 
 @app.route('/reaction', methods=['POST'])
 def receive_reaction():
-    """
-    Receives reaction events and prints them to console.
-    """
     try:
         # Get the JSON data from the request
         data = request.get_json()
@@ -32,6 +40,9 @@ def receive_reaction():
             'message': 'Reaction received',
             'timestamp': timestamp
         }), 200
+    
+        # TODO
+        #add_reaction_to_queue(data["emoji"])
 
     except Exception as e:
         print(f"ERROR: {str(e)}")
@@ -52,6 +63,9 @@ def health_check():
         'timestamp': datetime.now().isoformat()
     }), 200
 
+def run_flask():
+    app.run(host='0.0.0.0', threaded=True, port=5000, debug=True)
+
 
 if __name__ == '__main__':
     print("\n" + "="*80)
@@ -62,4 +76,16 @@ if __name__ == '__main__':
     print("Health check: GET http://localhost:5000/health")
     print("="*80 + "\n")
 
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    t = threading.Thread(target=run_flask, daemon=True)
+    t.start()
+
+    while True:
+        try:
+            while True:
+                reaction = q.get_nowait()
+                ReactionManager.queue_reaction(reaction)
+        except Empty:
+            pass
+
+        ReactionManager.poll()
+        sleep(0.001)
