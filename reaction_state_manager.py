@@ -8,7 +8,9 @@ from arms.big_wave_animation import BigWaveAnimation
 from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
 from arms.shocked_arms_animation import ShockedArmsAnimation
+from arms.thumbs_up_animation import ThumbsUpAnimation
 from eyes.animations.animation import EyeAnimation
+from eyes.animations.thumbs_up import WinkyAnimation
 from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_display
 from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
@@ -27,6 +29,7 @@ class ZoomEmoji:
 class ReactionType:
     Excited = "Excited"
     Love = "Love"
+    ThumbsUp = "ThumbsUp"
     Shocked = "Shocked"
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
@@ -38,7 +41,7 @@ ZOOM_EMOJI_TO_REACTION_TYPE = {
     "Clap": ReactionType.Excited,
     "Open Mouth": ReactionType.Shocked,
     # These particularly might like something better
-    "Thumbs up": ReactionType.Excited,
+    "Thumbs up": ReactionType.ThumbsUp,
     "Joy": ReactionType.Excited, # This is the crylaugh emoji
     # Extra Emojis
 }
@@ -78,13 +81,19 @@ class EyesReactionManager(ReactionSubManager):
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
             ReactionType.Shocked: ExcitedAnimation(),
-            ReactionType.Love: HeartAnimation()
+            ReactionType.Love: HeartAnimation(),
+            ReactionType.ThumbsUp: WinkyAnimation()
         }
+
+        self._default_animation = self.animations[ReactionType.Excited]
         self.active_animation: EyeAnimation = self.idle_animation
     
     @property
     def name(self):
         return "eyes"
+    
+    def _get_animation(self, reactionType: ReactionType):
+        return self.animations.get(reactionType, self._default_animation)
 
     def idle(self):
         self.active_animation.reset()
@@ -92,13 +101,13 @@ class EyesReactionManager(ReactionSubManager):
 
 
     def get_animation_length(self, reactionType) -> int:
-        len = self.animations[reactionType].length()
+        len = self._get_animation(reactionType).length()
         assert len is not None, "Set up an infinite animation in the reactions interface"
         return len
     
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
-        self.active_animation = self.animations[reactionType]
+        self.active_animation = self._get_animation(reactionType)
 
 
     def play_animation_frame(self, frame: int):
@@ -125,10 +134,16 @@ class ArmsReactionManager(ReactionSubManager):
         self.idle_animation = IdleArmAnimation()
         self.animations: dict[ReactionType, ArmAnimation] = {
             ReactionType.Excited: BigWaveAnimation(),
+<<<<<<< HEAD
             ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation()
+=======
+            ReactionType.Love: RaiseArmsAnimation(),
+            ReactionType.ThumbsUp: ThumbsUpAnimation()
+>>>>>>> main
         }
         self.active_animation: ArmAnimation = self.idle_animation
+        self._default_animation = self.animations[ReactionType.Excited]
 
     @property
     def name(self):
@@ -138,15 +153,17 @@ class ArmsReactionManager(ReactionSubManager):
         self.active_animation.reset()
         self.active_animation = self.idle_animation
 
+    def _get_animation(self, reactionType: ReactionType):
+        return self.animations.get(reactionType, self._default_animation)
 
     def get_animation_length(self, reactionType) -> int:
-        len = self.animations[reactionType].length()
+        len = self._get_animation(reactionType).length()
         assert len is not None, "Set up an infinite animation in the reactions interface"
         return len
     
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
-        self.active_animation = self.animations[reactionType]
+        self.active_animation = self._get_animation(reactionType)
 
 
     def play_animation_frame(self, frame: int):
