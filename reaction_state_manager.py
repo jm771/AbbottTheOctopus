@@ -78,7 +78,8 @@ class EyesReactionManager(ReactionSubManager):
         self.idle_animation = IdleEyesAnimation()
         self.animations: dict[ReactionType, EyeAnimation] = {
             ReactionType.Excited: ExcitedAnimation(),
-            ReactionType.Love: HeartAnimation()
+            ReactionType.Love: HeartAnimation(),
+            ReactionType.ThumbsUp: ThumbsUpAnimation()
         }
 
         self._default_animation = self.animations[ReactionType.Excited]
