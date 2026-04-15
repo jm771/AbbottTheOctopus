@@ -38,6 +38,6 @@ def make_arm_controllers():
             ArmController(pca.channels[0], False),
             ArmController(pca.channels[1], True),
         ]
-    except NotImplementedError, ImportError, AttributeError:
+    except (NotImplementedError, ImportError, AttributeError):
         print("No hardware detected, using stub arm controllers")
         return [StubArmController(), StubArmController()]
