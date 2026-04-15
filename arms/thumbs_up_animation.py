@@ -14,7 +14,7 @@ class ThumbsUpAnimation(ArmAnimation):
         # Keep right arm neutral
         right_arm.set_pos(START_POS)
 
-        END_POS = 1.0
+        END_POS = .7
         RAISE_FRAMES = 60
 
         # Raise left arm up, then hold at the top.
