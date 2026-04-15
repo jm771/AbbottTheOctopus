@@ -12,10 +12,12 @@ import struct
 import os
 import numpy as np
 
+
 class FramebufferDisplay:
     """
     A display class that mimics the Adafruit GC9A01A interface but writes to a framebuffer device.
     """
+
     def __init__(self, fb_device, width=240, height=240):
         """
         Initialize framebuffer display.
@@ -36,9 +38,9 @@ class FramebufferDisplay:
         self.fb_size = width * height * 2
 
         # Memory map the framebuffer
-        self.fb_mmap = mmap.mmap(self.fb_fd, self.fb_size,
-                                  mmap.MAP_SHARED,
-                                  mmap.PROT_READ | mmap.PROT_WRITE)
+        self.fb_mmap = mmap.mmap(
+            self.fb_fd, self.fb_size, mmap.MAP_SHARED, mmap.PROT_READ | mmap.PROT_WRITE
+        )
 
     def image(self, img, offset_x=0, offset_y=0):
         """
@@ -53,8 +55,8 @@ class FramebufferDisplay:
         s1 = datetime.now()
 
         # Convert to RGB if not already
-        if img.mode != 'RGB':
-            img = img.convert('RGB')
+        if img.mode != "RGB":
+            img = img.convert("RGB")
 
         img_width, img_height = img.size
 
@@ -97,7 +99,7 @@ class FramebufferDisplay:
             fb_offset = (fb_y * self.width + x_start) * bytes_per_pixel
 
             # Convert row to bytes
-            row_data = region_rgb565[row_idx].astype('<u2').tobytes()
+            row_data = region_rgb565[row_idx].astype("<u2").tobytes()
 
             # Write this row to framebuffer
             self.fb_mmap.seek(fb_offset)
@@ -118,7 +120,7 @@ class FramebufferDisplay:
             color = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)
 
         # Fill buffer with color
-        fb_data = struct.pack('<H', color) * (self.width * self.height)
+        fb_data = struct.pack("<H", color) * (self.width * self.height)
 
         # Write to framebuffer
         self.fb_mmap.seek(0)
@@ -126,9 +128,9 @@ class FramebufferDisplay:
 
     def close(self):
         """Clean up resources."""
-        if hasattr(self, 'fb_mmap'):
+        if hasattr(self, "fb_mmap"):
             self.fb_mmap.close()
-        if hasattr(self, 'fb_fd'):
+        if hasattr(self, "fb_fd"):
             os.close(self.fb_fd)
 
     def __enter__(self):
@@ -138,7 +140,20 @@ class FramebufferDisplay:
         self.close()
 
 
-def make_left_eye_display(fb_device='/dev/fb0'):
+class StubDisplay:
+    """No-op display for running without hardware."""
+
+    def image(self, img, offset_x=0, offset_y=0):
+        pass
+
+    def fill(self, color=0):
+        pass
+
+    def close(self):
+        pass
+
+
+def make_left_eye_display(fb_device="/dev/fb2"):
     """
     Create a framebuffer display for the left eye.
 
@@ -148,10 +163,14 @@ def make_left_eye_display(fb_device='/dev/fb0'):
     Returns:
         FramebufferDisplay instance
     """
-    return FramebufferDisplay(fb_device, width=240, height=240)
+    try:
+        return FramebufferDisplay(fb_device, width=240, height=240)
+    except FileNotFoundError, OSError:
+        print(f"No framebuffer at {fb_device}, using stub left eye display")
+        return StubDisplay()
 
 
-def make_right_eye_display(fb_device='/dev/fb1'):
+def make_right_eye_display(fb_device="/dev/fb1"):
     """
     Create a framebuffer display for the right eye.
 
@@ -161,4 +180,8 @@ def make_right_eye_display(fb_device='/dev/fb1'):
     Returns:
         FramebufferDisplay instance
     """
-    return FramebufferDisplay(fb_device, width=240, height=240)
+    try:
+        return FramebufferDisplay(fb_device, width=240, height=240)
+    except FileNotFoundError, OSError:
+        print(f"No framebuffer at {fb_device}, using stub right eye display")
+        return StubDisplay()
