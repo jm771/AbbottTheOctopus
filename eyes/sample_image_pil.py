@@ -1,4 +1,3 @@
-
 import time
 from eyes.eye_controllers import make_left_eye_display, make_right_eye_display
 from PIL import Image
@@ -36,5 +35,3 @@ while True:
     display1.image(image2)
     display2.image(image2)
     time.sleep(2)
-
-

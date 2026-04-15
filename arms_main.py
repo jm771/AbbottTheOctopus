@@ -2,6 +2,7 @@ from adafruit_pca9685 import PCA9685
 from time import sleep
 import board
 import busio
+
 # Create the I2C bus interface.
 i2c = busio.I2C(board.SCL, board.SDA)  # uses board.SCL and board.SDA
 
@@ -22,15 +23,15 @@ MAX_DUTY = 0x2800
 
 # But this is more than the range required to fully actuate the octopus tentcle
 MAX_OCTOPUS_REACH = 0x2000
-#MAX_DUTY = MIN_DUTY + MAX_OCTOPUS_REACH
+# MAX_DUTY = MIN_DUTY + MAX_OCTOPUS_REACH
 
 
-duty = MIN_DUTY 
+duty = MIN_DUTY
 while True:
     # print(f"{duty:x}")
     pca.channels[0].duty_cycle = duty
     pca.channels[1].duty_cycle = duty
     sleep(0.05)
-    duty += 0x100 
+    duty += 0x100
     if duty > MAX_DUTY:
         duty = MIN_DUTY
