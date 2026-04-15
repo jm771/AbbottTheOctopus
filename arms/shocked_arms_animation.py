@@ -20,4 +20,4 @@ class ShockedArmsAnimation(ArmAnimation):
         frame_number -= HALF_CYCLE_LENGTH // 2
         pos = (abs(frame_number % WAVE_CYCLE_LENGTH - HALF_CYCLE_LENGTH)) / HALF_CYCLE_LENGTH * WAVE_MAGNITUDE + (1.5 * WAVE_MAGNITUDE)
         left_arm.set_pos(pos)
-        right_arm.set_pos(WAVE_MAGNITUDE-pos)
+        right_arm.set_pos(1-pos)
