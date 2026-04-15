@@ -16,6 +16,7 @@ from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
 from eyes.animations.heart import HeartAnimation
 
+
 #
 class ZoomEmoji:
     Balloon = "Balloon"
@@ -23,14 +24,16 @@ class ZoomEmoji:
     ThumbsUp = "Thumbs up"
 
 
-# Logically this shouldn't live here - but sematically it helps 
+# Logically this shouldn't live here - but sematically it helps
 # give meaning and context to ReactionType
+
 
 class ReactionType:
     Excited = "Excited"
     Love = "Love"
     ThumbsUp = "ThumbsUp"
     Shocked = "Shocked"
+
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
     # These are the default zoom emojis which would be good to fill out all of (with unique animations)
@@ -42,7 +45,7 @@ ZOOM_EMOJI_TO_REACTION_TYPE = {
     "Open Mouth": ReactionType.Shocked,
     # These particularly might like something better
     "Thumbs up": ReactionType.ThumbsUp,
-    "Joy": ReactionType.Excited, # This is the crylaugh emoji
+    "Joy": ReactionType.Excited,  # This is the crylaugh emoji
     # Extra Emojis
 }
 
@@ -50,12 +53,15 @@ ZOOM_EMOJI_TO_REACTION_TYPE = {
 class ReactionSubManager(metaclass=ABCMeta):
     @property
     @abstractmethod
-    def name(self,):
+    def name(
+        self,
+    ):
         pass
 
-
     @abstractmethod
-    def idle(self,):
+    def idle(
+        self,
+    ):
         pass
 
     @abstractmethod
@@ -69,6 +75,7 @@ class ReactionSubManager(metaclass=ABCMeta):
     @abstractmethod
     def play_animation_frame(self, frame: int):
         pass
+
 
 class EyesReactionManager(ReactionSubManager):
     # We DI this because might want to test on PC with fake displays
@@ -87,11 +94,11 @@ class EyesReactionManager(ReactionSubManager):
 
         self._default_animation = self.animations[ReactionType.Excited]
         self.active_animation: EyeAnimation = self.idle_animation
-    
+
     @property
     def name(self):
         return "eyes"
-    
+
     def _get_animation(self, reactionType: ReactionType):
         return self.animations.get(reactionType, self._default_animation)
 
@@ -99,29 +106,34 @@ class EyesReactionManager(ReactionSubManager):
         self.active_animation.reset()
         self.active_animation = self.idle_animation
 
-
     def get_animation_length(self, reactionType) -> int:
         len = self._get_animation(reactionType).length()
-        assert len is not None, "Set up an infinite animation in the reactions interface"
+        assert (
+            len is not None
+        ), "Set up an infinite animation in the reactions interface"
         return len
-    
+
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
         self.active_animation = self._get_animation(reactionType)
-
 
     def play_animation_frame(self, frame: int):
         # Downsample frames for now - to stop the display looking too jank
         if frame % 6 == 0:
             # loop animation if we play past the end
-            looped_frame = frame if self.active_animation.length() is None else frame % self.active_animation.length()
+            looped_frame = (
+                frame
+                if self.active_animation.length() is None
+                else frame % self.active_animation.length()
+            )
 
-            self.active_animation.display_frame(self._left_display, self._right_display, looped_frame)
+            self.active_animation.display_frame(
+                self._left_display, self._right_display, looped_frame
+            )
 
 
 def make_eyes_reaction_manager():
     return EyesReactionManager(make_left_eye_display(), make_right_eye_display())
-
 
 
 class ArmsReactionManager(ReactionSubManager):
@@ -154,28 +166,35 @@ class ArmsReactionManager(ReactionSubManager):
 
     def get_animation_length(self, reactionType) -> int:
         len = self._get_animation(reactionType).length()
-        assert len is not None, "Set up an infinite animation in the reactions interface"
+        assert (
+            len is not None
+        ), "Set up an infinite animation in the reactions interface"
         return len
-    
+
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
         self.active_animation = self._get_animation(reactionType)
 
-
     def play_animation_frame(self, frame: int):
         # Idle if we go past the end of the animation:
-        if self.active_animation.length() is None or frame < self.active_animation.length():
+        if (
+            self.active_animation.length() is None
+            or frame < self.active_animation.length()
+        ):
             self.active_animation.display_frame(self._left_arm, self._right_arm, frame)
         else:
             self.idle()
 
+
 def make_arms_reaction_manager():
     return ArmsReactionManager(*make_arm_controllers())
+
 
 def td_to_micros(td: timedelta):
     return td.seconds * 1_000_000 + td.microseconds
 
-class ReactionStateManager():
+
+class ReactionStateManager:
     _MICROS_PER_FRAME = 1_000_000 // 60
 
     def __init__(self, sub_managers: list[ReactionSubManager]):
@@ -195,7 +214,9 @@ class ReactionStateManager():
 
     def _start_next_animation(self):
         new_reaction = self._queued_reactions[0]
-        self._current_animation_length = max(m.get_animation_length(new_reaction) for m in self._sub_managers)
+        self._current_animation_length = max(
+            m.get_animation_length(new_reaction) for m in self._sub_managers
+        )
         self._animation_start_time = datetime.now()
         self._last_frame = -1
         self._is_idle = False
@@ -204,23 +225,27 @@ class ReactionStateManager():
             manager.start_animation(new_reaction)
 
     def _get_current_frame(self):
-        return math.floor(td_to_micros(datetime.now() - self._animation_start_time) // self._MICROS_PER_FRAME)
+        return math.floor(
+            td_to_micros(datetime.now() - self._animation_start_time)
+            // self._MICROS_PER_FRAME
+        )
 
     def _maybe_push_animation_frame(self):
         current_frame = self._get_current_frame()
         if current_frame == self._last_frame:
             return
         if current_frame > self._last_frame + 1:
-            print(f"Missed a frame rendering {current_frame}, last frame was {self._last_frame} does animation have lots of compute?")
-        
+            print(
+                f"Missed a frame rendering {current_frame}, last frame was {self._last_frame} does animation have lots of compute?"
+            )
+
         for manager in self._sub_managers:
-            #start = datetime.now()
+            # start = datetime.now()
             manager.play_animation_frame(current_frame)
-            #end = datetime.now()
+            # end = datetime.now()
             # print(f"manager {manager.name} took {end - start}")
 
         self._last_frame = current_frame
-            
 
     def queue_reaction(self, reaction_type: ReactionType):
         if reaction_type not in self._queued_reactions:
@@ -239,7 +264,6 @@ class ReactionStateManager():
                     self._start_next_animation()
 
         self._maybe_push_animation_frame()
-
 
     def empty_queue(self):
         self._queued_reactions = []

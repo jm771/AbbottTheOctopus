@@ -3,6 +3,7 @@ from typing import Optional
 from arms.arm_animation import ArmAnimation
 from arms.arm_controler import ArmController
 
+
 class RaiseArmsAnimation(ArmAnimation):
     def reset(self):
         pass
@@ -10,7 +11,9 @@ class RaiseArmsAnimation(ArmAnimation):
     def length(self) -> Optional[int]:
         return 180
 
-    def display_frame(self, left_arm: ArmController, right_arm: ArmController, frame_number: int):
+    def display_frame(
+        self, left_arm: ArmController, right_arm: ArmController, frame_number: int
+    ):
         frame_number = frame_number // 2
         START_POS = 0.5
         PUMP_BOTTOM = 0.75
@@ -28,9 +31,11 @@ class RaiseArmsAnimation(ArmAnimation):
             DOWN_FRAMES = 15
             PUMP_FRAMES = UP_FRAMES + DOWN_FRAMES
             offset_frame = (frame_number - RAISE_FRAMES) % PUMP_FRAMES
-            
+
             if offset_frame <= UP_FRAMES:
-                pos = (PUMP_TOP - PUMP_BOTTOM) * (offset_frame / UP_FRAMES) + PUMP_BOTTOM
+                pos = (PUMP_TOP - PUMP_BOTTOM) * (
+                    offset_frame / UP_FRAMES
+                ) + PUMP_BOTTOM
             else:
                 down_frame = offset_frame - UP_FRAMES
                 pos = (PUMP_BOTTOM - PUMP_TOP) * (down_frame / DOWN_FRAMES) + PUMP_TOP

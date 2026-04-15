@@ -1,4 +1,3 @@
-
 from datetime import datetime
 from typing import Optional
 import random
@@ -7,11 +6,11 @@ from eyes.animations.animation import EyeAnimation
 from eyes.animations.eye_image import load_and_scale_eye_image
 from eyes.display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 
+
 class IdleEyesAnimation(EyeAnimation):
     def __init__(self):
         self.reset()
         self.baseImage = load_and_scale_eye_image(DISPLAY_WIDTH, DISPLAY_HEIGHT)
-
 
     def reset(self):
         self.currentX = 0
@@ -50,8 +49,9 @@ class IdleEyesAnimation(EyeAnimation):
         else:
             self.currentY += math.copysign(adjusted_speed, self.targetY - self.currentY)
 
-
-        im = self.baseImage.rotate(0, translate=[self.currentX, self.currentY], fillcolor=0xffffff) 
+        im = self.baseImage.rotate(
+            0, translate=[self.currentX, self.currentY], fillcolor=0xFFFFFF
+        )
 
         t1 = datetime.now()
         left_eye.image(im)
@@ -59,5 +59,4 @@ class IdleEyesAnimation(EyeAnimation):
         right_eye.image(im)
         t3 = datetime.now()
 
-        #print(f"display times {t3 - t2} {t2 - t1}")
-  
+        # print(f"display times {t3 - t2} {t2 - t1}")

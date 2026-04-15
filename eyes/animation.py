@@ -1,8 +1,9 @@
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+
 # If you can do your animation without needing any state other than frame number - you can leave `reset` as pass
-# If you want to manage more complex state (e.g. random movement) then you can store state on the class and use 
+# If you want to manage more complex state (e.g. random movement) then you can store state on the class and use
 # `reset` to reset it at the end of the animation.
 class Animation(metaclass=ABCMeta):
     @abstractmethod

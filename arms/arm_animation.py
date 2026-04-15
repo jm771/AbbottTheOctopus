@@ -5,7 +5,7 @@ from arms.arm_controler import ArmController
 
 
 # If you can do your animation without needing any state other than frame number - you can leave `reset` as pass
-# If you want to manage more complex state (e.g. random movement) then you can store state on the class and use 
+# If you want to manage more complex state (e.g. random movement) then you can store state on the class and use
 # `reset` to reset it at the end of the animation.
 class ArmAnimation(metaclass=ABCMeta):
     @abstractmethod
@@ -22,5 +22,7 @@ class ArmAnimation(metaclass=ABCMeta):
     # allow for multiple frames advancing between calls (if you're taking the approach of frame is a pure function of
     # frame number you get this for free - if using state you need to e.g. scale your speeds)
     @abstractmethod
-    def display_frame(self, left_arm: ArmController, right_arm: ArmController, frame_number: int):
+    def display_frame(
+        self, left_arm: ArmController, right_arm: ArmController, frame_number: int
+    ):
         pass
