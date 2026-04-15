@@ -100,8 +100,10 @@ if __name__ == "__main__":
         try:
             while True:
                 emoji = q.get_nowait()
+                print(f"main got {emoji=}")
                 try:
                     reaction = ZOOM_EMOJI_TO_REACTION_TYPE[emoji]
+                    print(f"main got {reaction=}")
                     ReactionManager.queue_reaction(reaction)
                 except KeyError:
                     pass
