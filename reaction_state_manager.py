@@ -27,6 +27,7 @@ class ZoomEmoji:
 class ReactionType:
     Excited = "Excited"
     Love = "Love"
+    Shocked = "Shocked"
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
     # These are the default zoom emojis which would be good to fill out all of (with unique animations)
