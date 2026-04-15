@@ -80,6 +80,8 @@ class EyesReactionManager(ReactionSubManager):
             ReactionType.Excited: ExcitedAnimation(),
             ReactionType.Love: HeartAnimation()
         }
+
+        self._default_animation = self.animations[ReactionType.Excited]
         self.active_animation: EyeAnimation = self.idle_animation
     
     @property
@@ -98,7 +100,7 @@ class EyesReactionManager(ReactionSubManager):
     
     def start_animation(self, reactionType: ReactionType):
         self.active_animation.reset()
-        self.active_animation = self.animations[reactionType]
+        self.active_animation = self.animations.get(reactionType, self._default_animation)
 
 
     def play_animation_frame(self, frame: int):
