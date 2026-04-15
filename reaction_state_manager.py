@@ -131,6 +131,7 @@ class ArmsReactionManager(ReactionSubManager):
             ReactionType.ThumbsUp: ThumbsUpAnimation()
         }
         self.active_animation: ArmAnimation = self.idle_animation
+        self._default_animation = self.animations[ReactionType.Excited]
 
     @property
     def name(self):
@@ -183,6 +184,9 @@ class ReactionStateManager():
 
         for manager in self._sub_managers:
             manager.idle()
+    
+    def _get_animation(self, reactionType: ReactionType):
+        return self.animations.get(reactionType, self._default_animation)
 
     def _start_next_animation(self):
         new_reaction = self._queued_reactions[0]
