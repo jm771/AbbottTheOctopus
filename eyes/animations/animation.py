@@ -21,6 +21,6 @@ class EyeAnimation(metaclass=ABCMeta):
     # frame number you get this for free - if using state you need to e.g. scale your speeds)
     @abstractmethod
     # TODO - find good type hints for the adafruit driver for this
-    # TODO - test mode to see the animations on a screen
+    # Abbott's left / right - i.e. stage left / right
     def display_frame(self, left_eye, right_eye, frame_number: int):
         pass

@@ -91,11 +91,12 @@ class WebVisualizationServer:
                     self.end_headers()
 
                     with server_instance.lock:
+                        # Swap left/right for stage perspective (stage left = audience right)
                         state = {
-                            "left_eye": server_instance.left_eye_data,
-                            "right_eye": server_instance.right_eye_data,
-                            "left_arm": server_instance.left_arm_pos,
-                            "right_arm": server_instance.right_arm_pos,
+                            "left_eye": server_instance.right_eye_data,
+                            "right_eye": server_instance.left_eye_data,
+                            "left_arm": server_instance.right_arm_pos,
+                            "right_arm": server_instance.left_arm_pos,
                         }
                     self.wfile.write(json.dumps(state).encode())
 
@@ -225,12 +226,12 @@ class WebVisualizationServer:
     <h1>Abbott the Octopus - Test Mode</h1>
     <div class="container">
         <div class="eye-section">
-            <div class="eye-label">Left Eye</div>
+            <div class="eye-label">(Stage) Right Eye</div>
             <div class="eye-display">
                 <img id="left-eye" src="" alt="Left eye">
             </div>
             <div class="arm-display">
-                <div class="arm-label">Left Arm</div>
+                <div class="arm-label">(Stage) Right Arm</div>
                 <div class="arm-bar">
                     <div class="arm-fill" id="left-arm-fill"></div>
                 </div>
@@ -239,12 +240,12 @@ class WebVisualizationServer:
         </div>
 
         <div class="eye-section">
-            <div class="eye-label">Right Eye</div>
+            <div class="eye-label">(Stage) Left Eye</div>
             <div class="eye-display">
                 <img id="right-eye" src="" alt="Right eye">
             </div>
             <div class="arm-display">
-                <div class="arm-label">Right Arm</div>
+                <div class="arm-label">(Stage) Left Arm</div>
                 <div class="arm-bar">
                     <div class="arm-fill" id="right-arm-fill"></div>
                 </div>

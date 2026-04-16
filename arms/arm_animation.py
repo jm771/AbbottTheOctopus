@@ -23,6 +23,7 @@ class ArmAnimation(metaclass=ABCMeta):
     # frame number you get this for free - if using state you need to e.g. scale your speeds)
     @abstractmethod
     def display_frame(
+        # Abbott's left / right - i.e. stage left / right
         self, left_arm: ArmController, right_arm: ArmController, frame_number: int
     ):
         pass
