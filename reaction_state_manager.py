@@ -190,6 +190,19 @@ def make_arms_reaction_manager():
     return ArmsReactionManager(*make_arm_controllers())
 
 
+def make_graphical_eyes_reaction_manager():
+    """Create eyes reaction manager with graphical displays for testing."""
+    from graphical_stubs import make_graphical_displays
+    left_display, right_display = make_graphical_displays()
+    return EyesReactionManager(left_display, right_display)
+
+
+def make_graphical_arms_reaction_manager():
+    """Create arms reaction manager with graphical controllers for testing."""
+    from graphical_stubs import make_graphical_arm_controllers
+    return ArmsReactionManager(*make_graphical_arm_controllers())
+
+
 def td_to_micros(td: timedelta):
     return td.seconds * 1_000_000 + td.microseconds
 
@@ -268,3 +281,17 @@ class ReactionStateManager:
     def empty_queue(self):
         self._queued_reactions = []
         self._idle()
+
+
+
+def make_octopus_reaction_manager():
+    return ReactionStateManager([
+        make_eyes_reaction_manager(),
+        make_arms_reaction_manager()
+    ])
+
+def make_graphical_reaction_manager():
+    return ReactionStateManager([
+        make_graphical_eyes_reaction_manager(),
+        make_graphical_arms_reaction_manager()
+    ])
