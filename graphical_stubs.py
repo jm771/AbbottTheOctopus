@@ -51,9 +51,22 @@ class WebVisualizationServer:
     def _run_server(self):
         """Run the HTTP server."""
         handler = self._make_handler()
-        with socketserver.TCPServer(("", self._PORT), handler) as httpd:
-            print(f"Web server running on http://localhost:{self._PORT}")
-            httpd.serve_forever()
+
+        # Allow reusing the address immediately after shutdown
+        socketserver.TCPServer.allow_reuse_address = True
+
+        try:
+            with socketserver.TCPServer(("", self._PORT), handler) as httpd:
+                httpd.allow_reuse_address = True
+                self.httpd = httpd
+                print(f"Web server running on http://localhost:{self._PORT}")
+                httpd.serve_forever()
+        except OSError as e:
+            if "Address already in use" in str(e):
+                print(f"Port {self._PORT} is already in use. The server may still be running from a previous session.")
+                print(f"You can access the visualization at http://localhost:{self._PORT}")
+            else:
+                raise
 
     def _make_handler(self):
         """Create a request handler with access to this instance."""
@@ -120,6 +133,13 @@ class WebVisualizationServer:
                 self.left_arm_pos = position
             else:
                 self.right_arm_pos = position
+
+    def shutdown(self):
+        """Shutdown the server cleanly."""
+        if hasattr(self, 'httpd'):
+            print("Shutting down web server...")
+            self.httpd.shutdown()
+            self.httpd.server_close()
 
     def _get_html(self):
         """Generate the HTML page."""

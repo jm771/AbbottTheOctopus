@@ -54,6 +54,16 @@ def main():
             sleep(0.001)
     except KeyboardInterrupt:
         print("\nShutting down...")
+    finally:
+        # Clean shutdown of web server if in test mode
+        if args.test:
+            try:
+                from graphical_stubs import WebVisualizationServer
+                server = WebVisualizationServer._instance
+                if server:
+                    server.shutdown()
+            except:
+                pass
 
 
 if __name__ == "__main__":
