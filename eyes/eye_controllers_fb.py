@@ -152,36 +152,21 @@ class StubDisplay:
     def close(self):
         pass
 
+def _get_fb_offset():
+    monitor_plugged_in = os.path.isfile("/dev/fb2")
+    return 1 if monitor_plugged_in else 0
 
-def make_left_eye_display(fb_device="/dev/fb0"):
-    """
-    Create a framebuffer display for the left eye.
-
-    Args:
-        fb_device: Path to framebuffer device (default: '/dev/fb0')
-
-    Returns:
-        FramebufferDisplay instance
-    """
+def _make_display(dev_file_index):
+    dev_file = f"/dev/fb{dev_file_index}"
     try:
-        return FramebufferDisplay(fb_device, width=240, height=240)
+        return FramebufferDisplay(dev_file)
     except (FileNotFoundError, OSError):
-        print(f"No framebuffer at {fb_device}, using stub left eye display")
-        return StubDisplay()
+        print(f"No framebuffer at {dev_file}, using stub right eye display")
+        return StubDisplay()   
+
+def make_left_eye_display():
+    return _make_display(0 + _get_fb_offset())
 
 
 def make_right_eye_display(fb_device="/dev/fb1"):
-    """
-    Create a framebuffer display for the right eye.
-
-    Args:
-        fb_device: Path to framebuffer device (default: '/dev/fb1')
-
-    Returns:
-        FramebufferDisplay instance
-    """
-    try:
-        return FramebufferDisplay(fb_device, width=240, height=240)
-    except (FileNotFoundError, OSError):
-        print(f"No framebuffer at {fb_device}, using stub right eye display")
-        return StubDisplay()
+    return _make_display(1 + _get_fb_offset())
