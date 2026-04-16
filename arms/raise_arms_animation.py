@@ -16,7 +16,7 @@ class RaiseArmsAnimation(ArmAnimation):
     ):
         frame_number = frame_number // 2
         START_POS = 0.5
-        PUMP_BOTTOM = 0.75
+        PUMP_BOTTOM = 0.65
         RAISE_FRAMES = 30
 
         # Raise hand for first 30 frames
@@ -25,7 +25,7 @@ class RaiseArmsAnimation(ArmAnimation):
 
         # then do three little pumps
         else:
-            PUMP_TOP = 0.85
+            PUMP_TOP = 0.75
             # Let's so a sharp up then a slow down
             UP_FRAMES = 5
             DOWN_FRAMES = 15
