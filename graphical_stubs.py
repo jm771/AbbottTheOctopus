@@ -340,6 +340,7 @@ class GraphicalStubArmController:
 
     def set_pos(self, pos: float):
         """Set arm position (0.0 to 1.0)."""
+        print("pos set ", pos)
         self.current_pos = pos
         self.server.update_arm(self.is_left, pos)
 
