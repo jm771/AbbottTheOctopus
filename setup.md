@@ -12,6 +12,9 @@ dtoverlay=gc9a01-configurable,dc_gpio=25,reset_gpio=27,led_gpio=255,speed=400000
 dtoverlay=gc9a01-configurable,spi=1,dc_gpio=26,reset_gpio=6,led_gpio=255,speed=40000000
 ```
 
+sudo apt install libopenjp2-7
+sudo apt install libopenblas0
+
 python -m venv env
 source ~/env/bin/activate
 pip install -r requirements.txt
