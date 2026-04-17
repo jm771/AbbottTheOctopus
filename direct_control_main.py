@@ -20,7 +20,7 @@ def get_arm_controllers(is_test):
         return [ArmController(i, False) for i in range (0, 7)]
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins="*")
 
 @app.route("/arm", methods=["POST"])
 def receive_reaction():
