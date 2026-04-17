@@ -14,3 +14,4 @@ Adafruit-PlatformDetect==3.88.0
 Adafruit-PureIO==1.1.11
 adafruit-python-shell==1.11.1
 Flask==3.1.1
+pillow==12.2.0
