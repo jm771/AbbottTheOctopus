@@ -17,6 +17,17 @@ def get_arm_controllers(is_test):
     if is_test:
         return [GraphicalStubArmController(True) for i in range (0, 7)]
     else:
+        import board
+        import busio
+        from adafruit_pca9685 import PCA9685
+
+        i2c = board.I2C()
+        pca = PCA9685(i2c)
+        pca.frequency = 60
+        return [
+            ArmController(pca.channels[i], False) for i in range(0,7)
+        ]
+
         return [ArmController(i, False) for i in range (0, 7)]
 
 app = Flask(__name__)
