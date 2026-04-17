@@ -25,7 +25,7 @@ def get_arm_controllers(is_test):
         pca = PCA9685(i2c)
         pca.frequency = 60
         return [
-            ArmController(pca.channels[i], False) for i in range(0,7)
+            ArmController(pca.channels[i], False) for i in range(0,8)
         ]
 
         return [ArmController(i, False) for i in range (0, 7)]
