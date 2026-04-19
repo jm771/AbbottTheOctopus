@@ -16,3 +16,4 @@ adafruit-python-shell==1.11.1
 Flask==3.1.1
 pillow==12.2.0
 numpy==2.4.4
+flask-cors==6.0.2
