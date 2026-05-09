@@ -26,8 +26,7 @@ class WebVisualizationServer:
         # Shared state for visualization
         self.left_eye_data = None
         self.right_eye_data = None
-        self.left_arm_pos = 0.5
-        self.right_arm_pos = 0.5
+        self.arm_positions = { i: 0.5 for i in range(8)}
         self.lock = threading.Lock()
 
         # Start the web server in a background thread
@@ -93,8 +92,8 @@ class WebVisualizationServer:
                         state = {
                             "left_eye": server_instance.left_eye_data,
                             "right_eye": server_instance.right_eye_data,
-                            "left_arm": server_instance.left_arm_pos,
-                            "right_arm": server_instance.right_arm_pos,
+                        } | {
+                            f"arm_{i}": pos for i, pos in server_instance.arm_positions.items()
                         }
                     self.wfile.write(json.dumps(state).encode())
 
@@ -125,13 +124,10 @@ class WebVisualizationServer:
             else:
                 self.right_eye_data = data_url
 
-    def update_arm(self, is_left, position):
+    def update_arm(self, index, position):
         """Update arm position."""
         with self.lock:
-            if is_left:
-                self.left_arm_pos = position
-            else:
-                self.right_arm_pos = position
+            self.arm_positions[index] = position
 
     def shutdown(self):
         """Shutdown the server cleanly."""
@@ -374,16 +370,15 @@ class GraphicalStubDisplay:
 class GraphicalStubArmController:
     """Stub arm controller that updates the web visualization."""
 
-    def __init__(self, is_left):
-        self.is_left = is_left
+    def __init__(self, index):
+        self.index = index
         self.server = WebVisualizationServer.get_instance()
         self.current_pos = 0.5
 
     def set_pos(self, pos: float):
         """Set arm position (0.0 to 1.0)."""
-        # print("pos set ", pos)
         self.current_pos = pos
-        self.server.update_arm(self.is_left, pos)
+        self.server.update_arm(self.index, pos)
 
 
 def make_graphical_displays():

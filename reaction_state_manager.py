@@ -138,9 +138,8 @@ def make_eyes_reaction_manager():
 
 class ArmsReactionManager(ReactionSubManager):
     # We DI this because might want to test on PC with fake displays
-    def __init__(self, left_arm, right_arm):
-        self._left_arm = left_arm
-        self._right_arm = right_arm
+    def __init__(self, arms):
+        self._arms = arms
 
         # Could definitely have a few and pick randomly or sth
         self.idle_animation = IdleArmAnimation()
@@ -181,7 +180,7 @@ class ArmsReactionManager(ReactionSubManager):
             self.active_animation.length() is None
             or frame < self.active_animation.length()
         ):
-            self.active_animation.display_frame(self._left_arm, self._right_arm, frame)
+            self.active_animation.display_frame(self._arms, frame)
         else:
             self.idle()
 
