@@ -11,8 +11,10 @@ class ThumbsUpAnimation(ArmAnimation):
         return 180
 
     def display_frame(
-        self, left_arm: ArmController, right_arm: ArmController, frame_number: int
+        self, arms: list[ArmController], frame_number: int
     ):
+        left_arm = arms[0]
+        right_arm = arms[-1]
         START_POS = 0.5
         # Keep right arm neutral
         right_arm.set_pos(START_POS)

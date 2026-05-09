@@ -24,6 +24,6 @@ class ArmAnimation(metaclass=ABCMeta):
     @abstractmethod
     def display_frame(
         # Abbott's left / right - i.e. stage left / right
-        self, left_arm: ArmController, right_arm: ArmController, frame_number: int
+        self, arms: list[ArmController], frame_number: int
     ):
         pass

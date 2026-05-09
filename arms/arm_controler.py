@@ -20,24 +20,18 @@ class ArmController:
             self._channel.duty_cycle = MIN_DUTY + duty_int
 
 
-class StubArmController:
-    def set_pos(self, pos: float):
-        pass
-
-
 def make_arm_controllers():
     try:
         import board
-        import busio
         from adafruit_pca9685 import PCA9685
 
         i2c = board.I2C()
         pca = PCA9685(i2c)
         pca.frequency = 60
+        # TODO - work out invertions
         return [
-            ArmController(pca.channels[0], False),
-            ArmController(pca.channels[1], True),
+            ArmController(pca.channels[i], i % 2 == 0) for i in range(8)
         ]
     except (NotImplementedError, ImportError, AttributeError):
-        print("No hardware detected, using stub arm controllers")
-        return [StubArmController(), StubArmController()]
+        raise Exception("No hardware detected - consider running with --test")
+        
