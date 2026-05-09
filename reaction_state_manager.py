@@ -186,7 +186,7 @@ class ArmsReactionManager(ReactionSubManager):
 
 
 def make_arms_reaction_manager():
-    return ArmsReactionManager(*make_arm_controllers())
+    return ArmsReactionManager(make_arm_controllers())
 
 
 def make_graphical_eyes_reaction_manager():
@@ -199,7 +199,7 @@ def make_graphical_eyes_reaction_manager():
 def make_graphical_arms_reaction_manager():
     """Create arms reaction manager with graphical controllers for testing."""
     from graphical_stubs import make_graphical_arm_controllers
-    return ArmsReactionManager(*make_graphical_arm_controllers())
+    return ArmsReactionManager(make_graphical_arm_controllers())
 
 
 def td_to_micros(td: timedelta):
