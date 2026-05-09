@@ -194,29 +194,10 @@ class WebVisualizationServer:
             font-size: 12px;
             margin-bottom: 5px;
         }
-        .arm-bar {
-            width: 240px;
-            height: 30px;
-            background: #3c3c3c;
-            border-radius: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-        .arm-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #64c8ff, #4dabeb);
-            transition: width 0.1s ease-out;
-            border-radius: 15px;
-        }
         .arm-value {
             font-size: 11px;
             margin-top: 5px;
             color: #64c8ff;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
         }
     </style>
 </head>
@@ -224,35 +205,31 @@ class WebVisualizationServer:
     <h1>Abbott the Octopus - Test Mode</h1>
     <div class="container">
         <div class="eye-section">
-            <div class="eye-label">(Stage) Right Eye</div>
+            <div class="eye-label">(House) Left Eye</div>
             <div class="eye-display">
                 <img id="left-eye" src="" alt="Left eye">
             </div>
             <div class="arm-display">
-                <div class="arm-label">(Stage) Right Arm</div>
-                <div class="arm-bar">
-                    <div class="arm-fill" id="left-arm-fill"></div>
-                </div>
+                <div class="arm-label">(House) Left Arm</div>
+                <canvas id="leftArmCanvas" width="200" height="200"></canvas>
                 <div class="arm-value" id="left-arm-value">0.50</div>
             </div>
         </div>
 
         <div class="eye-section">
-            <div class="eye-label">(Stage) Left Eye</div>
+            <div class="eye-label">(House) Right Eye</div>
             <div class="eye-display">
                 <img id="right-eye" src="" alt="Right eye">
             </div>
             <div class="arm-display">
-                <div class="arm-label">(Stage) Left Arm</div>
-                <div class="arm-bar">
-                    <div class="arm-fill" id="right-arm-fill"></div>
-                </div>
+                <div class="arm-label">(House) Right Arm</div>
+                <canvas id="rightArmCanvas" width="200" height="200"></canvas>
                 <div class="arm-value" id="right-arm-value">0.50</div>
             </div>
         </div>
     </div>
-    <canvas id="leftArmCanvas" width="200" height="200"></canvas>
-    <canvas id="rightArmCanvas" width="200" height="200"></canvas>
+    
+
 
     <script>
         const leftEye = document.getElementById('left-eye');
@@ -314,10 +291,6 @@ class WebVisualizationServer:
                     // Update arms
                     const leftArmPercent = (data.left_arm * 100).toFixed(0);
                     const rightArmPercent = (data.right_arm * 100).toFixed(0);
-
-                    leftArmFill.style.width = leftArmPercent + '%';
-                    rightArmFill.style.width = rightArmPercent + '%';
-
                     leftArmValue.textContent = data.left_arm.toFixed(2);
                     rightArmValue.textContent = data.right_arm.toFixed(2);
 
