@@ -10,7 +10,6 @@ import json
 import base64
 from io import BytesIO
 from PIL import Image
-import webbrowser
 import time
 
 
@@ -40,7 +39,6 @@ class WebVisualizationServer:
 
         # Open browser
         print(f"Opening visualization at http://localhost:{self._PORT}")
-        webbrowser.open(f"http://localhost:{self._PORT}")
 
     @classmethod
     def get_instance(cls):
@@ -93,10 +91,10 @@ class WebVisualizationServer:
                     with server_instance.lock:
                         # Swap left/right for stage perspective (stage left = audience right)
                         state = {
-                            "left_eye": server_instance.right_eye_data,
-                            "right_eye": server_instance.left_eye_data,
-                            "left_arm": server_instance.right_arm_pos,
-                            "right_arm": server_instance.left_arm_pos,
+                            "left_eye": server_instance.left_eye_data,
+                            "right_eye": server_instance.right_arm_pos,
+                            "left_arm": server_instance.left_arm_pos,
+                            "right_arm": server_instance.right_arm_pos,
                         }
                     self.wfile.write(json.dumps(state).encode())
 
@@ -253,6 +251,9 @@ class WebVisualizationServer:
             </div>
         </div>
     </div>
+    <canvas>
+
+    <canvas id="myCanvas" width="200" height="200"/>
 
     <script>
         const leftEye = document.getElementById('left-eye');
@@ -283,6 +284,43 @@ class WebVisualizationServer:
 
                     leftArmValue.textContent = data.left_arm.toFixed(2);
                     rightArmValue.textContent = data.right_arm.toFixed(2);
+
+                    const canvas = document.querySelector("canvas");
+                    const ctx = canvas.getContext("2d");
+
+
+                    // angle in radians * radius = arm length = constant
+                    const ARM_LENGTH = 100;
+
+                    // Arc has zero at X axis, increasing clockwise
+
+                    // Lets go a little under 2*pi
+                    const MAX_ARM_RADS = 6;
+
+                    // signed value
+                    const rads = MAX_ARM_RADS * 2 * (data.left_arm - 0.5)
+                    console.log(rads)
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (Math.abs(rads) < 0.1) {
+                    // todo - draw stright line
+                    } else {
+                        // this is signed too
+                        const radius = ARM_LENGTH / rads;
+
+
+                        ctx.beginPath();
+                        // TODO - X needs choosing
+                        const middle = rads > 0 ? Math.PI / 2 : -Math.PI / 2;
+                        console.log(100, 100 + radius, Math.abs(radius), middle - rads, middle + rads);
+                        ctx.arc(100, 100 + radius, Math.abs(radius), middle - rads, middle + rads);
+                        ctx.stroke();
+                    }
+
+
+
+
                 })
                 .catch(err => console.error('Update failed:', err));
         }
@@ -340,7 +378,7 @@ class GraphicalStubArmController:
 
     def set_pos(self, pos: float):
         """Set arm position (0.0 to 1.0)."""
-        print("pos set ", pos)
+        # print("pos set ", pos)
         self.current_pos = pos
         self.server.update_arm(self.is_left, pos)
 
