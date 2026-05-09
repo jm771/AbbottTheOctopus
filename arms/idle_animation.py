@@ -16,7 +16,5 @@ class IdleArmAnimation(ArmAnimation):
     def display_frame(
         self, arms: list[ArmController], frame_number: int
     ):
-        left_arm = arms[0]
-        right_arm = arms[-1]
-        left_arm.set_pos(0.5)
-        right_arm.set_pos(0.5)
+        for arm in arms:
+            arm.set_pos(0.5)

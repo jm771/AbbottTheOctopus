@@ -19,12 +19,11 @@ class BigWaveAnimation(ArmAnimation):
     def display_frame(
         self, arms: list[ArmController], frame_number: int
     ):
-        left_arm = arms[0]
-        right_arm = arms[-1]
         frame_number -= HALF_CYCLE_LENGTH // 2
 
         pos = (
             abs(frame_number % WAVE_CYCLE_LENGTH - HALF_CYCLE_LENGTH)
         ) / HALF_CYCLE_LENGTH
-        left_arm.set_pos(pos)
-        right_arm.set_pos(1 - pos)
+
+        for i, arm in enumerate(arms):
+            arm.set_pos(pos if i % 2 == 0 else 1 - pos)

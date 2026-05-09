@@ -195,6 +195,21 @@ class WebVisualizationServer:
             margin-top: 5px;
             color: #64c8ff;
         }
+        .arms-octagon {
+            margin-top: 40px;
+            position: relative;
+            width: 600px;
+            height: 600px;
+        }
+        .arm-canvas-wrapper {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .arm-canvas-wrapper canvas {
+            border: 1px solid #646464;
+        }
     </style>
 </head>
 <body>
@@ -205,11 +220,6 @@ class WebVisualizationServer:
             <div class="eye-display">
                 <img id="left-eye" src="" alt="Left eye">
             </div>
-            <div class="arm-display">
-                <div class="arm-label">(House) Left Arm</div>
-                <canvas id="leftArmCanvas" width="200" height="200"></canvas>
-                <div class="arm-value" id="left-arm-value">0.50</div>
-            </div>
         </div>
 
         <div class="eye-section">
@@ -217,53 +227,95 @@ class WebVisualizationServer:
             <div class="eye-display">
                 <img id="right-eye" src="" alt="Right eye">
             </div>
-            <div class="arm-display">
-                <div class="arm-label">(House) Right Arm</div>
-                <canvas id="rightArmCanvas" width="200" height="200"></canvas>
-                <div class="arm-value" id="right-arm-value">0.50</div>
-            </div>
         </div>
     </div>
-    
+
+    <div class="arms-octagon" id="arms-container">
+        <!-- Arms arranged in octagon with flat bottom edge (Arm 0 to Arm 7), going clockwise -->
+        <!-- Arm 0: Bottom-left of bottom edge -->
+        <div class="arm-canvas-wrapper" style="left: 100px; top: 450px;">
+            <div class="arm-label">Arm 0</div>
+            <canvas id="arm-canvas-0" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-0">0.50</div>
+        </div>
+        <!-- Arm 1: Left side -->
+        <div class="arm-canvas-wrapper" style="left: 0px; top: 320px;">
+            <div class="arm-label">Arm 1</div>
+            <canvas id="arm-canvas-1" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-1">0.50</div>
+        </div>
+        <!-- Arm 2: Top-left side -->
+        <div class="arm-canvas-wrapper" style="left: 0px; top: 130px;">
+            <div class="arm-label">Arm 2</div>
+            <canvas id="arm-canvas-2" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-2">0.50</div>
+        </div>
+        <!-- Arm 3: Top-left of top edge -->
+        <div class="arm-canvas-wrapper" style="left: 100px; top: 0px;">
+            <div class="arm-label">Arm 3</div>
+            <canvas id="arm-canvas-3" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-3">0.50</div>
+        </div>
+        <!-- Arm 4: Top-right of top edge -->
+        <div class="arm-canvas-wrapper" style="left: 350px; top: 0px;">
+            <div class="arm-label">Arm 4</div>
+            <canvas id="arm-canvas-4" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-4">0.50</div>
+        </div>
+        <!-- Arm 5: Top-right side -->
+        <div class="arm-canvas-wrapper" style="left: 450px; top: 130px;">
+            <div class="arm-label">Arm 5</div>
+            <canvas id="arm-canvas-5" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-5">0.50</div>
+        </div>
+        <!-- Arm 6: Right side -->
+        <div class="arm-canvas-wrapper" style="left: 450px; top: 320px;">
+            <div class="arm-label">Arm 6</div>
+            <canvas id="arm-canvas-6" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-6">0.50</div>
+        </div>
+        <!-- Arm 7: Bottom-right of bottom edge -->
+        <div class="arm-canvas-wrapper" style="left: 350px; top: 450px;">
+            <div class="arm-label">Arm 7</div>
+            <canvas id="arm-canvas-7" width="150" height="150"></canvas>
+            <div class="arm-value" id="arm-value-7">0.50</div>
+        </div>
+    </div>
 
 
     <script>
         const leftEye = document.getElementById('left-eye');
         const rightEye = document.getElementById('right-eye');
-        const leftArmFill = document.getElementById('left-arm-fill');
-        const rightArmFill = document.getElementById('right-arm-fill');
-        const leftArmValue = document.getElementById('left-arm-value');
-        const rightArmValue = document.getElementById('right-arm-value');
 
-        function drawArm(canvas, left_arm, value) {
-            ctx = canvas.getContext("2d");
+        function drawArm(canvas, isLeft, value) {
+            const ctx = canvas.getContext("2d");
             // angle in radians * radius = arm length = constant
-            const ARM_LENGTH = 100;
+            const ARM_LENGTH = 60;
 
             // Arc has zero at X axis, increasing clockwise
 
             // Lets go a little under 2*pi
             const MAX_ARM_RADS = 5;
-            const ARM_OFF_X = 100
-            const ARM_OFF_Y = 100
+            const ARM_OFF_X = 75;
+            const ARM_OFF_Y = 75;
 
             // signed value
-            const rads = MAX_ARM_RADS * 2 * (value - 0.5) * (left_arm === false ? -1 : 1);
-            
+            const rads = MAX_ARM_RADS * 2 * (value - 0.5) * (isLeft ? 1 : -1);
+
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.strokeStyle = 'white';
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 4;
 
             if (Math.abs(rads) < 0.1) {
                 ctx.beginPath()
                 ctx.moveTo(ARM_OFF_X, ARM_OFF_Y);
-                ctx.lineTo(ARM_OFF_X - ARM_LENGTH * (left_arm === false ? -1 : 1), ARM_OFF_Y);
+                ctx.lineTo(ARM_OFF_X - ARM_LENGTH * (isLeft ? 1 : -1), ARM_OFF_Y);
                 ctx.stroke();
             } else {
                 // This is signed
                 // yes this flips the flip
-                const radius = ARM_LENGTH / rads * (left_arm === false ? -1 : 1);
+                const radius = ARM_LENGTH / rads * (isLeft ? 1 : -1);
 
                 ctx.beginPath();
                 const middle = radius > 0 ? Math.PI / 2 : -Math.PI / 2;
@@ -285,15 +337,21 @@ class WebVisualizationServer:
                         rightEye.src = data.right_eye;
                     }
 
-                    // Update arms
-                    const leftArmPercent = (data.left_arm * 100).toFixed(0);
-                    const rightArmPercent = (data.right_arm * 100).toFixed(0);
-                    leftArmValue.textContent = data.left_arm.toFixed(2);
-                    rightArmValue.textContent = data.right_arm.toFixed(2);
+                    // Update all 8 arms
+                    // First 4 arms (0-3) are considered "left" for drawing purposes
+                    for (let i = 0; i < 8; i++) {
+                        const armData = data[`arm_${i}`];
+                        if (armData !== undefined) {
+                            const canvas = document.getElementById(`arm-canvas-${i}`);
+                            const valueElement = document.getElementById(`arm-value-${i}`);
+                            const isLeft = i < 4; // First 4 arms are "left"
 
-
-                    drawArm(document.getElementById("leftArmCanvas"), true, data.left_arm);
-                    drawArm(document.getElementById("rightArmCanvas"), false, data.right_arm);
+                            if (canvas && valueElement) {
+                                drawArm(canvas, isLeft, armData);
+                                valueElement.textContent = armData.toFixed(2);
+                            }
+                        }
+                    }
                 })
                 .catch(err => console.error('Update failed:', err));
         }
@@ -362,4 +420,4 @@ def make_graphical_displays():
 
 def make_graphical_arm_controllers():
     """Create graphical stub arm controllers for testing."""
-    return [GraphicalStubArmController(True), GraphicalStubArmController(False)]
+    return [GraphicalStubArmController(i) for i in range(8)]
