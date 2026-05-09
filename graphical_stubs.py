@@ -92,7 +92,7 @@ class WebVisualizationServer:
                         # Swap left/right for stage perspective (stage left = audience right)
                         state = {
                             "left_eye": server_instance.left_eye_data,
-                            "right_eye": server_instance.right_arm_pos,
+                            "right_eye": server_instance.right_eye_data,
                             "left_arm": server_instance.left_arm_pos,
                             "right_arm": server_instance.right_arm_pos,
                         }
@@ -251,9 +251,8 @@ class WebVisualizationServer:
             </div>
         </div>
     </div>
-    <canvas>
-
-    <canvas id="myCanvas" width="200" height="200"/>
+    <canvas id="leftArmCanvas" width="200" height="200"></canvas>
+    <canvas id="rightArmCanvas" width="200" height="200"></canvas>
 
     <script>
         const leftEye = document.getElementById('left-eye');
@@ -262,6 +261,43 @@ class WebVisualizationServer:
         const rightArmFill = document.getElementById('right-arm-fill');
         const leftArmValue = document.getElementById('left-arm-value');
         const rightArmValue = document.getElementById('right-arm-value');
+
+        function drawArm(canvas, left_arm, value) {
+            ctx = canvas.getContext("2d");
+            // angle in radians * radius = arm length = constant
+            const ARM_LENGTH = 100;
+
+            // Arc has zero at X axis, increasing clockwise
+
+            // Lets go a little under 2*pi
+            const MAX_ARM_RADS = 5;
+            const ARM_OFF_X = 100
+            const ARM_OFF_Y = 100
+
+            // signed value
+            const rads = MAX_ARM_RADS * 2 * (value - 0.5) * (left_arm === false ? -1 : 1);
+            
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'white';
+
+            if (Math.abs(rads) < 0.1) {
+                ctx.beginPath()
+                ctx.moveTo(ARM_OFF_X, ARM_OFF_Y);
+                ctx.lineTo(ARM_OFF_X - ARM_LENGTH * (left_arm === false ? -1 : 1), ARM_OFF_Y);
+                ctx.stroke();
+            } else {
+                // This is signed
+                // yes this flips the flip
+                const radius = ARM_LENGTH / rads * (left_arm === false ? -1 : 1);
+
+                ctx.beginPath();
+                const middle = radius > 0 ? Math.PI / 2 : -Math.PI / 2;
+                const clockwise = rads < 0
+                ctx.arc(ARM_OFF_X, ARM_OFF_Y - radius, Math.abs(radius), middle, middle + rads, clockwise);
+                ctx.stroke();
+            }
+        }
 
         function updateVisualization() {
             fetch('/state')
@@ -285,42 +321,9 @@ class WebVisualizationServer:
                     leftArmValue.textContent = data.left_arm.toFixed(2);
                     rightArmValue.textContent = data.right_arm.toFixed(2);
 
-                    const canvas = document.querySelector("canvas");
-                    const ctx = canvas.getContext("2d");
 
-
-                    // angle in radians * radius = arm length = constant
-                    const ARM_LENGTH = 100;
-
-                    // Arc has zero at X axis, increasing clockwise
-
-                    // Lets go a little under 2*pi
-                    const MAX_ARM_RADS = 6;
-
-                    // signed value
-                    const rads = MAX_ARM_RADS * 2 * (data.left_arm - 0.5)
-                    console.log(rads)
-
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                    if (Math.abs(rads) < 0.1) {
-                    // todo - draw stright line
-                    } else {
-                        // this is signed too
-                        const radius = ARM_LENGTH / rads;
-
-
-                        ctx.beginPath();
-                        // TODO - X needs choosing
-                        const middle = rads > 0 ? Math.PI / 2 : -Math.PI / 2;
-                        console.log(100, 100 + radius, Math.abs(radius), middle - rads, middle + rads);
-                        ctx.arc(100, 100 + radius, Math.abs(radius), middle - rads, middle + rads);
-                        ctx.stroke();
-                    }
-
-
-
-
+                    drawArm(document.getElementById("leftArmCanvas"), true, data.left_arm);
+                    drawArm(document.getElementById("rightArmCanvas"), false, data.right_arm);
                 })
                 .catch(err => console.error('Update failed:', err));
         }
