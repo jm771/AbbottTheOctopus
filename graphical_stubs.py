@@ -257,6 +257,7 @@ class WebVisualizationServer:
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.strokeStyle = 'white';
+            ctx.lineWidth = 6;
 
             if (Math.abs(rads) < 0.1) {
                 ctx.beginPath()
