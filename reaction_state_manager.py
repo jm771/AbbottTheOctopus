@@ -15,13 +15,8 @@ from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_displa
 from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
 from eyes.animations.heart import HeartAnimation
+from eyes.animation.spin import SpinAnimation
 
-
-#
-class ZoomEmoji:
-    Balloon = "Balloon"
-    Rocket = "Rocket"
-    ThumbsUp = "Thumbs up"
 
 
 # Logically this shouldn't live here - but sematically it helps
@@ -33,6 +28,7 @@ class ReactionType:
     Love = "Love"
     ThumbsUp = "ThumbsUp"
     Shocked = "Shocked"
+    Spin = "Spin"
 
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
@@ -45,7 +41,7 @@ ZOOM_EMOJI_TO_REACTION_TYPE = {
     "openmouth": ReactionType.Shocked,
     "thumbsup": ReactionType.ThumbsUp,
     # Would love to get a new one for this - this is "crylaugh"
-    "joy": ReactionType.Excited,  
+    "joy": ReactionType.Excited,
     # Extra Emojis
 }
 
@@ -148,6 +144,7 @@ class ArmsReactionManager(ReactionSubManager):
             ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation(),
             ReactionType.ThumbsUp: ThumbsUpAnimation(),
+            ReactionType.Spin: SpinReaction()
         }
         self.active_animation: ArmAnimation = self.idle_animation
         self._default_animation = self.animations[ReactionType.Excited]

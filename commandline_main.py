@@ -20,6 +20,8 @@ def select_reaction(character):
         return ReactionType.Shocked
     if character == "t":
         return ReactionType.ThumbsUp
+    if character == "z":
+        return ReactionType.Spin
 
     return None
 
