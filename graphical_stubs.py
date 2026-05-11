@@ -231,51 +231,51 @@ class WebVisualizationServer:
     </div>
 
     <div class="arms-octagon" id="arms-container">
-        <!-- Arms arranged in octagon with flat bottom edge (Arm 0 to Arm 7), going clockwise -->
-        <!-- Arm 0: Bottom-left of bottom edge -->
-        <div class="arm-canvas-wrapper" style="left: 100px; top: 450px;">
+        <!-- Arms arranged in octagon with point at bottom (Arm 7), going clockwise from Arm 0 -->
+        <!-- Arm 0: Bottom-left diagonal -->
+        <div class="arm-canvas-wrapper" style="left: 66px; top: 384px;">
             <div class="arm-label">Arm 0</div>
             <canvas id="arm-canvas-0" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-0">0.50</div>
         </div>
         <!-- Arm 1: Left side -->
-        <div class="arm-canvas-wrapper" style="left: 0px; top: 320px;">
+        <div class="arm-canvas-wrapper" style="left: 0px; top: 225px;">
             <div class="arm-label">Arm 1</div>
             <canvas id="arm-canvas-1" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-1">0.50</div>
         </div>
-        <!-- Arm 2: Top-left side -->
-        <div class="arm-canvas-wrapper" style="left: 0px; top: 130px;">
+        <!-- Arm 2: Top-left diagonal -->
+        <div class="arm-canvas-wrapper" style="left: 66px; top: 66px;">
             <div class="arm-label">Arm 2</div>
             <canvas id="arm-canvas-2" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-2">0.50</div>
         </div>
-        <!-- Arm 3: Top-left of top edge -->
-        <div class="arm-canvas-wrapper" style="left: 100px; top: 0px;">
+        <!-- Arm 3: Top center -->
+        <div class="arm-canvas-wrapper" style="left: 225px; top: 0px;">
             <div class="arm-label">Arm 3</div>
             <canvas id="arm-canvas-3" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-3">0.50</div>
         </div>
-        <!-- Arm 4: Top-right of top edge -->
-        <div class="arm-canvas-wrapper" style="left: 350px; top: 0px;">
+        <!-- Arm 4: Top-right diagonal -->
+        <div class="arm-canvas-wrapper" style="left: 384px; top: 66px;">
             <div class="arm-label">Arm 4</div>
             <canvas id="arm-canvas-4" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-4">0.50</div>
         </div>
-        <!-- Arm 5: Top-right side -->
-        <div class="arm-canvas-wrapper" style="left: 450px; top: 130px;">
+        <!-- Arm 5: Right side -->
+        <div class="arm-canvas-wrapper" style="left: 450px; top: 225px;">
             <div class="arm-label">Arm 5</div>
             <canvas id="arm-canvas-5" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-5">0.50</div>
         </div>
-        <!-- Arm 6: Right side -->
-        <div class="arm-canvas-wrapper" style="left: 450px; top: 320px;">
+        <!-- Arm 6: Bottom-right diagonal -->
+        <div class="arm-canvas-wrapper" style="left: 384px; top: 384px;">
             <div class="arm-label">Arm 6</div>
             <canvas id="arm-canvas-6" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-6">0.50</div>
         </div>
-        <!-- Arm 7: Bottom-right of bottom edge -->
-        <div class="arm-canvas-wrapper" style="left: 350px; top: 450px;">
+        <!-- Arm 7: Bottom point -->
+        <div class="arm-canvas-wrapper" style="left: 225px; top: 450px;">
             <div class="arm-label">Arm 7</div>
             <canvas id="arm-canvas-7" width="150" height="150"></canvas>
             <div class="arm-value" id="arm-value-7">0.50</div>
