@@ -5,11 +5,13 @@ import math
 from arms.arm_animation import ArmAnimation
 from arms.arm_controler import make_arm_controllers
 from arms.big_wave_animation import BigWaveAnimation
+from arms.clap_animation import ClapAnimation as ArmClapAnimation
 from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
 from arms.shocked_arms_animation import ShockedArmsAnimation
 from arms.thumbs_up_animation import ThumbsUpAnimation
 from eyes.animations.animation import EyeAnimation
+from eyes.animations.clap import ClapAnimation as EyeClapAnimation
 from eyes.animations.winky import WinkyAnimation
 from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_display
 from eyes.animations.excited import ExcitedAnimation
@@ -33,6 +35,7 @@ class ReactionType:
     Love = "Love"
     ThumbsUp = "ThumbsUp"
     Shocked = "Shocked"
+    Clap = "Clap"
 
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
@@ -90,6 +93,7 @@ class EyesReactionManager(ReactionSubManager):
             ReactionType.Shocked: ExcitedAnimation(),
             ReactionType.Love: HeartAnimation(),
             ReactionType.ThumbsUp: WinkyAnimation(),
+            ReactionType.Clap: EyeClapAnimation(),
         }
 
         self._default_animation = self.animations[ReactionType.Excited]
@@ -148,6 +152,7 @@ class ArmsReactionManager(ReactionSubManager):
             ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation(),
             ReactionType.ThumbsUp: ThumbsUpAnimation(),
+            ReactionType.Clap: ArmClapAnimation(),
         }
         self.active_animation: ArmAnimation = self.idle_animation
         self._default_animation = self.animations[ReactionType.Excited]
