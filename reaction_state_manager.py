@@ -9,6 +9,7 @@ from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
 from arms.shocked_arms_animation import ShockedArmsAnimation
 from arms.thumbs_up_animation import ThumbsUpAnimation
+from arms.spin_animation import SpinAnimation
 from eyes.animations.animation import EyeAnimation
 from eyes.animations.winky import WinkyAnimation
 from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_display
@@ -33,6 +34,7 @@ class ReactionType:
     Love = "Love"
     ThumbsUp = "ThumbsUp"
     Shocked = "Shocked"
+    Kitty = "Kitty"
 
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
@@ -44,6 +46,7 @@ ZOOM_EMOJI_TO_REACTION_TYPE = {
     "clap": ReactionType.Love,
     "openmouth": ReactionType.Shocked,
     "thumbsup": ReactionType.ThumbsUp,
+    "smiley_cat": ReactionType.Kitty,
     # Would love to get a new one for this - this is "crylaugh"
     "joy": ReactionType.Excited,  
     # Extra Emojis
@@ -148,6 +151,7 @@ class ArmsReactionManager(ReactionSubManager):
             ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation(),
             ReactionType.ThumbsUp: ThumbsUpAnimation(),
+            ReactionType.Kitty: SpinAnimation(),
         }
         self.active_animation: ArmAnimation = self.idle_animation
         self._default_animation = self.animations[ReactionType.Excited]
