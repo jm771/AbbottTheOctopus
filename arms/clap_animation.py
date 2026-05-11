@@ -21,5 +21,5 @@ class ClapAnimation(ArmAnimation):
         beat_phase = (frame_number % CLAP_FRAMES) / CLAP_FRAMES
         pos = math.sin(beat_phase * math.pi)
 
-        arms[1].set_pos(pos)
-        arms[7].set_pos(pos)
+        arms[0].set_pos(pos)
+        arms[6].set_pos(pos)
