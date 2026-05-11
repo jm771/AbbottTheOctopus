@@ -30,7 +30,7 @@ def make_arm_controllers():
         pca.frequency = 60
         # TODO - work out invertions
         return [
-            ArmController(pca.channels[i], i % 2 == 0) for i in range(8)
+            ArmController(pca.channels[i], False) for i in range(8)
         ]
     except (NotImplementedError, ImportError, AttributeError):
         raise Exception("No hardware detected - consider running with --test")
