@@ -20,10 +20,10 @@ def select_reaction(character):
         return ReactionType.Shocked
     if character == "t":
         return ReactionType.ThumbsUp
-    if character == "z":
-        return ReactionType.Spin
     if character == "!":
         return ReactionType.ArmsUp
+    if character == "k":
+        return ReactionType.Kitty
 
     return None
 
@@ -46,7 +46,7 @@ def main():
     reaction_manager = make_octopus_reaction_manager() if not args.test else make_graphical_reaction_manager()
 
     print(f"Running in {'TEST' if args.test else 'NORMAL'} mode")
-    print("Press 'e' for Excited, 'h' for Love, 's' for Shocked, 't' for ThumbsUp")
+    print("Press 'e' for Excited, 'h' for Love, 's' for Shocked, 't' for ThumbsUp, 'k' for Kitty")
 
     try:
         while True:
