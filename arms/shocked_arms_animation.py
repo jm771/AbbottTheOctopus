@@ -21,7 +21,7 @@ class ShockedArmsAnimation(ArmAnimation):
         self, arms: list[ArmController], frame_number: int
     ):
         left_arm = arms[0]
-        right_arm = arms[-1]
+        right_arm = arms[-2]
         frame_number -= HALF_CYCLE_LENGTH // 2
         pos = (
             abs(frame_number % WAVE_CYCLE_LENGTH - HALF_CYCLE_LENGTH)

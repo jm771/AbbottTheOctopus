@@ -14,7 +14,7 @@ class ThumbsUpAnimation(ArmAnimation):
         self, arms: list[ArmController], frame_number: int
     ):
         left_arm = arms[0]
-        right_arm = arms[-1]
+        right_arm = arms[-2]
         START_POS = 0.5
         # Keep right arm neutral
         right_arm.set_pos(START_POS)
