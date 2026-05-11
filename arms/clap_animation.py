@@ -19,7 +19,9 @@ class ClapAnimation(ArmAnimation):
     def display_frame(self, arms: list[ArmController], frame_number: int):
         # Both arms move together: up on the beat, back down between beats
         beat_phase = (frame_number % CLAP_FRAMES) / CLAP_FRAMES
-        pos = math.sin(beat_phase * math.pi)
+        
+        # 1/6 since we want to start pos at 0.5; arcsin of 0.5 = pi/6
+        pos = math.sin((beat_phase + (1/6)) * math.pi)
 
         arms[0].set_pos(pos)
         arms[6].set_pos(pos)
