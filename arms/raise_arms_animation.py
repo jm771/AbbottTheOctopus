@@ -15,7 +15,7 @@ class RaiseArmsAnimation(ArmAnimation):
         self, arms: list[ArmController], frame_number: int
     ):
         left_arm = arms[0]
-        right_arm = arms[-1]
+        right_arm = arms[-2]
         frame_number = frame_number // 2
         START_POS = 0.5
         PUMP_BOTTOM = 0.65
