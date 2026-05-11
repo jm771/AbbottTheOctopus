@@ -22,6 +22,8 @@ def select_reaction(character):
         return ReactionType.ThumbsUp
     if character == "z":
         return ReactionType.Spin
+    if character == "!":
+        return ReactionType.ArmsUp
 
     return None
 

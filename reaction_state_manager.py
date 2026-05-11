@@ -4,6 +4,7 @@ import enum
 import math
 from arms.arm_animation import ArmAnimation
 from arms.arm_controler import make_arm_controllers
+from arms.arms_up_animation import ArmsUpAnimation
 from arms.big_wave_animation import BigWaveAnimation
 from arms.idle_animation import IdleArmAnimation
 from arms.raise_arms_animation import RaiseArmsAnimation
@@ -15,7 +16,7 @@ from eyes.eye_controllers_fb import make_left_eye_display, make_right_eye_displa
 from eyes.animations.excited import ExcitedAnimation
 from eyes.animations.moving_eyes import IdleEyesAnimation
 from eyes.animations.heart import HeartAnimation
-from eyes.animation.spin import SpinAnimation
+# from eyes.animation.spin import SpinAnimation
 
 
 
@@ -29,6 +30,7 @@ class ReactionType:
     ThumbsUp = "ThumbsUp"
     Shocked = "Shocked"
     Spin = "Spin"
+    ArmsUp = "ArmsUp"
 
 
 ZOOM_EMOJI_TO_REACTION_TYPE = {
@@ -144,7 +146,8 @@ class ArmsReactionManager(ReactionSubManager):
             ReactionType.Shocked: ShockedArmsAnimation(),
             ReactionType.Love: RaiseArmsAnimation(),
             ReactionType.ThumbsUp: ThumbsUpAnimation(),
-            ReactionType.Spin: SpinReaction()
+            # ReactionType.Spin: SpinReaction()
+            ReactionType.ArmsUp: ArmsUpAnimation()
         }
         self.active_animation: ArmAnimation = self.idle_animation
         self._default_animation = self.animations[ReactionType.Excited]
